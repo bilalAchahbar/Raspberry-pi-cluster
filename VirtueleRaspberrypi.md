@@ -104,12 +104,16 @@ Hoe ga je te werk
 - Als je nu de commando `free -m`runt kan je zien dat er nu een swap geheugen word gebruikt van 1GB 
 
 
+Maar dit is niet haalbaar als je met kubernetes wilt werken. Kubernetes heeft het voordeel om 100 % van de beschikbare grootte te gebruiken en dus geen lags te gebruiken die je krijgt als je met een swap geheugen gaat werken. Voor performante redenen is het (op het moment dat ik deze documentatie schrijf hopelijk verbeterd dit in de toekomst) niet mogelijk om een Raspberry pi cluster in een emulator te plaatsen.
+
+
 
 
 ### Bronnenlijst
 
 - https://www.pcsteps.com/1199-raspberry-pi-emulation-for-windows-qemu/
 - https://blogs.msdn.microsoft.com/iliast/2016/11/10/how-to-emulate-raspberry-pi/
+- https://serverfault.com/questions/881517/why-disable-swap-on-kubernetes
 
    
 
