@@ -65,6 +65,25 @@ Nu kan je inloggen met de nieuwe gebruikersnaam. Weet dat je nog steeds de defau
 - Deze pas je aan door de commando `passwd` toe te passen (dit kan wel als je ingelogd bent dus log gerust in met je nieuwe gebruikersnaam en pas dit binnen je login sessie aan) en de instructies op het scherm te volgen.
 - Kijk **ZEKER** na of je nieuwe gebruiker nog steeds administrator rechten heeft door een sudo commando uit te voeren.
 
+##### CPU GPU split
+De Raspberry pi gebruikt de configuratie file(`/boot/config.txt`) in plaats van de BIOS dat je vind in een normale pc.
+Hierin kan je de parameters veranderen voor de GPU en de ARM CPU. De parameter die in de config files staat en die moet veranderd worden is de gpu_mem.  gpu_mem word getoond in megabytes en split het RAM geheugen tussen de GPU en de CPU. De waarde die je meegeeft aan de gpu_mem word ingesteld voor de GPU. De overgebleven geheugen word gegeven aan de CPU. Wanneer je dus de raspberry pi zal gebruiken voor een gaming emulator geef je de GPU zoveel mogelijk waarde. Aan de andere kant wanneer je de raspberry pi zal gebruiken voor een server die nooit of bijna nooit word aangesloten op een pc scherm , en die dus meer cpu nodig heeft en zo min mogelijk gpu geeft ga je de waarde van gpu_mem op het minimum zetten.
+
+In het kort als je een grafische interface nodig hebt verhoog het geheugen van de GPU en wanneer je geen grafische interface nodig hebt zet deze waarde op zo min mogelijk. De minimum waarde voor de gpu_mem is 16 lager dan dat is niet aangeraden. 
+Wanneer je volgende commando's uitvoert kun je de huidige instellingen zien van de verdeling tussen cpu en gpu. 
+- `sudo vcgencmd get_mem arm` Voor de cpu
+    - Waarde: 948 Mb
+- `sudo vcgencmd get_mem arm` voor de gpu
+    - Waarde: 76Mb
+    
+Je ziet dat de gpu nog veel geheugen krijgt terwijl wij geen grafische interface nodig hebben. Als root gebruiker (dus niet met een  sudo commando in je huidige gebruiker maar als root gebruiker omdat je veranderingen toebrengt aan de boot folder) voer je volgende commando uit `echo gpu_mem=16 >> /boot/config.txt`Als je deze commando hebt gerunned en je raspberry herstart zal je volgende waarden krijgen bij de commando's
+- `sudo vcgencmd get_mem arm` Voor de cpu
+    - Waarde: 998 Mb
+- `sudo vcgencmd get_mem arm` voor de gpu
+    - Waarde: 16 Mb
+    
+Nu is onze gpu / cpu verdeling voldoende voor een CLI omgeving.
+
 ##### Sudo rechten toekennen
 In Linux word elke user dat je toegevoegd aan de sudo groep, een sudo user en krijgt dus alle sudo rechten
 1. Nieuwe user toevoegen aan sudo group
