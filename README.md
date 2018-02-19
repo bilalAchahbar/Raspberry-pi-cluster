@@ -226,6 +226,13 @@ Dit is een optie nadat je de firewall hebt ingesteld. Omdat je u Raspberry Pi ge
 -	Beveiliging van de raspberry pi (extra veiligheidsopties).
 
   https://www.raspberrypi.org/documentation/configuration/security.md
+  
+- CPU / GPU split
+
+ https://haydenjames.io/raspberry-pi-3-overclock/
+ https://www.raspberrypi.org/documentation/configuration/config-txt/README.md
+ https://www.raspberrypi.org/documentation/configuration/config-txt/memory.md
+  
 
 
 
