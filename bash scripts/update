@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+
+#### Beschrijving : Dit is een bash script om de  commando's die nodig zijn om je systeem up te daten te automatiseren
+####  Geschreven door Bilal Achahbar op 14/02/2018
+
+sudo apt-get update -y
+sudo apt-get upgrade -y
+sudo apt-get dist-upgrade -y

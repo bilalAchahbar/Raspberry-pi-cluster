@@ -1,0 +1,53 @@
+#!/usr/bin/env bash
+
+
+#### Beschrijving : Dit bash script dient om de raspberry pi in een lock mode te zetten
+#### Wat wil zeggen dat de authenticatie via passwoorden zal uitschakelen
+#### Dit gebeurd door de file /etc/ssh_config aan te passen
+#### We gaan volgende parameters aanpassen:
+#### ChallengeResponseAuthentication , PasswordAuthentication , UsePAM 
+#### Geschreven door: Bilal Achahbar op 13/02/2018
+
+file=/etc/ssh/sshd_config
+
+if [ ! -f $file ]
+  then
+	echo "configuratie bestand $file bestaat niet"
+	exit 1	
+ fi
+
+ if [ $# -eq 0 ]
+  then
+	echo "Geen parameter meegegeven"
+	echo  "De mogelijke parameters zijn"
+	echo  "lock of unlock"
+
+	
+
+ elif [ "$1" != "lock" ] && [ "$1" != "unlock" ]
+   then
+	echo "$1 is niet de juiste parameter"
+	echo "Je moet als parameter lock of unlock meegeven"
+    
+ fi
+
+ if [ "$1" == "lock" ]
+  then
+
+	sed -i   's/ChallengeResponseAuthentication yes/ChallengeResponseAuthentication no/g' $file 
+	sed -i   's/#PasswordAuthentication yes/PasswordAuthentication no/g' $file 
+	sed -i   's/UsePAM yes/UsePAM no/g' $file 
+ fi
+
+ if [ "$1" == "unlock" ]
+  then
+
+	sed -i   's/ChallengeResponseAuthentication no/ChallengeResponseAuthentication yes/g' $file 
+       	sed -i   's/PasswordAuthentication no/#PasswordAuthentication yes/g' $file 
+	sed -i   's/UsePAM no/UsePAM yes/g' $file 
+ fi
+
+
+#restart ssh service
+service ssh restart
+
