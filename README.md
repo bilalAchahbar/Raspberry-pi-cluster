@@ -103,13 +103,13 @@ Aangezien mac met dezelfde unix terminal werkt als linux zijn de commando’s id
 In Windows gebruik je niet de ssh keygen commando maar de Putty Key Generator. Dit is een programma van putty die een publieke en private key zal genereren.Open de putty keygen generator (dit is normaal gezien standaard mee geinstalleerd wanneer je Putty hebt geinstalleerd bekijk de download page van Putty wanneer dit niet het geval is). Daar kies je in het tabblad key voor de optie “SSH-2 RSA key” en klik je op Generate. 
 
 Beweeg je muis over het lege grijze vlak zodat de keygenerator  zijn werk kan uitvoeren en een random key kan genereren. Nadat putty een ssh key heeft uitgevoerd krijg je volgend scherm te zien.. De private key en de public key sla je veilig op je host machine via de 2 onderste knoppen "Save public key" , "Save Private key". De private key zal je later nodig hebben om te verbinden met je raspberri pi. **SLA ZEKER JE KEYS GOED OP**
-![Putty keygen](/images/PuttyKeygen.img)
+![Putty keygen](/images/PuttyKeygen.jpg)
 De bovenstaande key die je in het textvak kunt zien moet je kopieren en plakken in de authorized_keys file van je raspberry pi **LET OP DE SCROLBAR, KOPIEER ZEKER ALLES MEE**. Hiervoor ga je in putty verbinden (TYP DIT NIET OVER KOPIEER) met de raspberry pi om naar volgende bestand te gaan `~/.ssh/authorized_keys`. Dit bestand kan al andere keys bevatten van andere pc’s je plakt hierin de publiek key van jouw pc op een nieuwe lijn(in Putty kan je plakken vanuit je  windows klembord met de shortkey *SHIFT+INSERT*). Sla het bestand ~/.ssh/authorized_keys op en sluit de editor.
 
 ###### **Verbinden met de raspberry vanuit windows host.**
 
 Wanneer je nu wilt verbinden met de Raspberry pi vanuit je windows host ga je de private key meegeven in Putty dit doe je door in Putty het volgende in te stellen. Bij opstart van Putty kies je in het linkerscherm voor -->SSH-->Auth daar zie je de Browse knop en  moet je de private key meegeven  die je daarnet in de Putty Key Generator hebt opgeslagen(niet de key die je hebt gekopieerd in ~/.ssh/authorized_keys file maar de key die je hebt opgeslagen in de keygenerator met de kop "Save private key" .
-![Putty geef private key mee](/images/PuttySshPrivatekey.img)
+![Putty geef private key mee](/images/PuttySshPrivatekey.jpg)
 Wanneer je nu verbind met je raspberry zal je niet gevraagd worden om het wachtwoord in te geven want hij bevestig jouw machine door de ssh key. Je kan zelf de default gebruikersnaam instellen in putty zodat hij je ook niet zal vragen achter jouw gebruikersnaam. Door in het tabblad Connection--> Date de auto-login username in te stellen. Zo zal je bij je volgende sessie direct verbonden zijn met je raspberry pi. Vergeet zeker niet om deze instellingen in putty  op te slaan zodat je niet steeds de keys en de default gebruikersnaam moet meegeven.
 
 #### Extra beveiliging
@@ -159,7 +159,7 @@ de programma's die werden geinstalleerd zijn
 
 Via het programma “Win32 Disk imager” (zie “te installeren software”) kan je de OS waarmee je nu alle instellingen hebt ingesteld clonen naar een image. Zodat je deze image met jouw instellingen altijd bij de hand hebt voor een back-up of om een nieuwe kubernetes node toe te voegen. 
 Als je het programma opent ga je in het zoekveld een pad en naam geven aan de image die je wilt maken (De eerste keer zal hij zeggen dat deze image niet bestaat en gaat hij zelf de image aanmaken) zorg er zeker voor dat de schijfletter rechtsboven klopt met de schijfletter van de sd kaart. Klik vervolgens op “Lezen” en het programma zal je sd kaart clonen naar een image bestand.
-![Image clonen](/images/Win32DiskImager.img)
+![Image clonen](/images/Win32DiskImager.jpg)
 
 #### Extra veiligheidsopties voor betere security (optioneel)
  Deze instellingen heb ik niet in mijn basic image ingesteld omdat ik een image zal maken die voor zowel de node als de master dezelfde gaat zijn. De veiligheidsopties moeten nie op elke node worden geinstalleerd. Voor te bekijken hoe je deze instellingen toepast bekijk je de [beveiligingsopties pagina](https://www.raspberrypi.org/documentation/configuration/security.md) in de raspberry documentatie.
