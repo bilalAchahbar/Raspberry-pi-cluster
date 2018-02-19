@@ -83,7 +83,7 @@ Als je ssh verbinding is opgestart kan je proberen verbinden vanuit je host naar
 In linux is de ssh client  standaard al geinstalleerd. Is dit niet het geval kan je dit doen door `sudo apt-get install openssh-server`Deze zal de server en de client voor je installeren. 
 Met de commando `ssh-keygen -t rsa -C comment`_(Geef als comment de naam van jouw pc of jou naam mee zodat je in de raspberry pi later de keys van de verschillende pc’s makkelijker kan achterhalen.)_ ga je de ssh keys genereren. Volg de instructies op het scherm. Je zal gevraagd worden om de keys op te slaan in een map naar keuze of de default home folder. Verder krijg je de vraag om een wachtwoord in te geven , deze dient om de private key te beveiligen.
 Bij een succesvolle creatie van een ssh key krijg je soortgelijk scherm te zien
-/images/linux_ssh.jpg?raw=true
+[Linux ssh](/images/linux_ssh.jpg?raw=true)
 
 Nu zal je de public key van je hostmachine moeten kopiëren om deze in je raspberri pi op te slaan en dat je raspberri pi jouw host machine als authorized host kan zien. Dit kan je doen met volgende commando:
 `cat ~/.ssh/id_rsa.pub | ssh Gebruiker@Hostname 'cat >> .ssh/authorized_keys'`
