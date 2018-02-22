@@ -84,6 +84,17 @@ Je ziet dat de gpu nog veel geheugen krijgt terwijl wij geen grafische interface
     
 Nu is onze gpu / cpu verdeling voldoende voor een CLI omgeving.
 
+##### Bluetooth en wifi
+Omdat de raspberry pi zal dienen als een server en zal draaien in een serverkast met ethernet verbinding.
+Zijn wifi en bluetooth overbodige services die resources gebruiken. 
+Om deze af te zetten zal je in de configuratie file van de boot (De BIOS) volgende lijnen moeten toevoegen.
+- Config file = `/boot/config.txt`
+- `dtoverlay=pi3-disable-wifi`
+- `dtoverlay=pi3-disable-bt`
+
+Als je deze 2 lijnen hebt toegevoegd aan de configuratie file zal hij dus bij opstart de bluetooth service en wifi uitzetten. 
+
+
 ##### Sudo rechten toekennen
 In Linux word elke user dat je toegevoegd aan de sudo groep, een sudo user en krijgt dus alle sudo rechten
 1. Nieuwe user toevoegen aan sudo group
@@ -232,6 +243,10 @@ Dit is een optie nadat je de firewall hebt ingesteld. Omdat je u Raspberry Pi ge
  https://haydenjames.io/raspberry-pi-3-overclock/
  https://www.raspberrypi.org/documentation/configuration/config-txt/README.md
  https://www.raspberrypi.org/documentation/configuration/config-txt/memory.md
+ 
+ - Uitschakelen bluetooth en wifi
+ 
+ https://www.raspberrypi.org/forums/viewtopic.php?f=63&t=138610
   
 
 
