@@ -202,7 +202,7 @@ Nadat ik de image had aangemaakt via de win32DiskImager wou ik deze via Etcher o
 
 - Een manuele oplossing
 
-  Namelijk dat je zelf de image gaat verkleinen door middel van commando's in linux (de beste voorbeelden om dit te doen is dat je het verkleinen uitvoert in een linux omgeving). Dit zijn enkele stappen die je moet uitvoeren om je image te verkleinen waar je zelf kan beslissen hoe groot de uiteindelijke image zal moeten zijn. Ik heb deze oplossing niet verder onderzocht als je toch deze oplossing prefereert boven de automatische oplossing kan je gebruik maken van volgende [Tutorial] (http://www.aoakley.com/articles/2015-10-09-resizing-sd-images.php)
+  Namelijk dat je zelf de image gaat verkleinen door middel van commando's in linux (de beste voorbeelden om dit te doen is dat je het verkleinen uitvoert in een linux omgeving). Dit zijn enkele stappen die je moet uitvoeren om je image te verkleinen waar je zelf kan beslissen hoe groot de uiteindelijke image zal moeten zijn. Ik heb deze oplossing niet verder onderzocht als je toch deze oplossing prefereert boven de automatische oplossing kan je gebruik maken van volgende [Tutorial](http://www.aoakley.com/articles/2015-10-09-resizing-sd-images.php)
   
 - Automatische oplossing
 
@@ -226,7 +226,9 @@ Dit zit niet in de basic image omdat een firewall niet voor elke node en voor de
 ###### **Installeren van fail2ban**
 Dit is een optie nadat je de firewall hebt ingesteld. Omdat je u Raspberry Pi gebruikt als een server en deze toegankelijk is voor mensen die ermee verbinden met ssh hebben gebruikers toegang aan de Raspberry Pi. Fail2ban is een scanner dat de log files gaat bekijken en nakijken op ongewone activiteiten. Het zal aangeven wanneer er bijvoorbeeld meerdere brute force pogingen hebben plaats gevonden  om in te loggen in je pi. En heeft zelf de mogelijkheid om elke firewall die is ingesteld in te stellen dat bepaalde ip-addressen niet meer mogen inloggen. Dit is een automatische tool dat word aangeboden zodat de gebruiker niet steeds de log bestanden moet bekijken voor ongewone aanmeldingen. Het grijpt ook in na een ongewone situatie zodat jij dit zelf niet manueel meer hoeft te doen.
 
+#### Maintainer
 
+- Bilal Achahbar
 
 #### Bronnenlijst
 
