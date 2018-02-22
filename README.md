@@ -193,8 +193,25 @@ de programma's die werden geinstalleerd zijn
 
 Via het programma “Win32 Disk imager” (zie “te installeren software”) kan je de OS waarmee je nu alle instellingen hebt ingesteld clonen naar een image. Zodat je deze image met jouw instellingen altijd bij de hand hebt voor een back-up of om een nieuwe kubernetes node toe te voegen. 
 Als je het programma opent ga je in het zoekveld een pad en naam geven aan de image die je wilt maken (De eerste keer zal hij zeggen dat deze image niet bestaat en gaat hij zelf de image aanmaken) zorg er zeker voor dat de schijfletter rechtsboven klopt met de schijfletter van de sd kaart. Klik vervolgens op “Lezen” en het programma zal je sd kaart clonen naar een image bestand.
-
 ![Image clonen](/images/Win32DiskImager.jpg)
+
+
+##### Probleemstelling
+
+Nadat ik de image had aangemaakt via de win32DiskImager wou ik deze via Etcher op nieuwe sd kaarten plaatsen. Het probleem  waarop ik niet had gerekend is dat sd kaarten nooit 2 x dezelfde kunnen zijn(tenzij deze van hetzelfde merk , hetzelfde model , dezelfde fabriek komen). De aangemaakte image was dus te groot voor de nieuwe kaart. Dat is raar aangezien ik maar iets meer dan 1.5 GB gebruik. Om dit probleem op te lossen moet dus de vrije ruimte worden verwijderd zodat de image iets kleiner is en gemakkelijker op andere sd kaarten (Die zelf kleiner mogen zijn dat  de initiele sd kaart) kan worden geplaatst. Hiervoor zijn er 2 oplossingen.
+
+- Een manuele oplossing
+
+  Namelijk dat je zelf de image gaat verkleinen door middel van commando's in linux (de beste voorbeelden om dit te doen is dat je het verkleinen uitvoert in een linux omgeving). Dit zijn enkele stappen die je moet uitvoeren om je image te verkleinen waar je zelf kan beslissen hoe groot de uiteindelijke image zal moeten zijn. Ik heb deze oplossing niet verder onderzocht als je toch deze oplossing prefereert boven de automatische oplossing kan je gebruik maken van volgende [Tutorial] (http://www.aoakley.com/articles/2015-10-09-resizing-sd-images.php)
+  
+- Automatische oplossing
+
+  Een manuele oplossing is zeker een goede oplossing maar daar kan er nogal veel mislopen (Murphy). Omdat deze steeds problemen met zich mee bracht heb ik dan maar geopteerd om een automatische oplossing op te zoeken waar je zelf niets moet instellen. Hiervoor is er een scriptje ter beschikking `pishrink.sh`die de gehele verkleiningsproces autmatiseerd. Deze zal jouw image verkleinen naar een kleinere grootte(iets meer dan het minimum). Je kan dit script gebruiken als volgt `sudo pishrink.sh [-s] imagefile.img [newimagefile.img]` 2 parameters zijn optioneel. 
+  
+  - `-s` Omdat jouw image maar enkele gigabytes groot is en je toch de volledige grootte van jouw filesystem wilt gebruiken. Kan je in de raspberry pi een expand toepassen. Default gaat het `pishrink.sh` dit doen na de eerste keer dat je boot met de nieuwe image. Als je dit niet wilt kan je het expand proces ook overslaan , dit doe je met de `-s`parameter.
+  - `newimagefile.img` Als je een img file meegeeft zal de shell script deze image file verkleinen naar een zo min mogelijke grootte. Maar als je de originele file wilt behouden en een kleinere file wilt gebruiken kan dit ook zonder enige problemen. Dan geef je een extra parameter mee met de naamgeving van de nieuwe image. Deze zal dan een nieuwe image file creeren die kleiner is dan de originele.
+
+
 
 #### Extra veiligheidsopties voor betere security (optioneel)
  Deze instellingen heb ik niet in mijn basic image ingesteld omdat ik een image zal maken die voor zowel de node als de master dezelfde gaat zijn. De veiligheidsopties moeten nie op elke node worden geinstalleerd. Voor te bekijken hoe je deze instellingen toepast bekijk je de [beveiligingsopties pagina](https://www.raspberrypi.org/documentation/configuration/security.md) in de raspberry documentatie.
@@ -247,6 +264,13 @@ Dit is een optie nadat je de firewall hebt ingesteld. Omdat je u Raspberry Pi ge
  - Uitschakelen bluetooth en wifi
  
  https://www.raspberrypi.org/forums/viewtopic.php?f=63&t=138610
+ 
+ - Image verkleinen
+ 
+ http://www.aoakley.com/articles/2015-10-09-resizing-sd-images.php
+ 
+ https://github.com/Drewsif/PiShrink
+ 
   
 
 
