@@ -93,6 +93,7 @@ Om deze af te zetten zal je in de configuratie file van de boot (De BIOS) volgen
 - `dtoverlay=pi3-disable-bt`
 
 Als je deze 2 lijnen hebt toegevoegd aan de configuratie file zal hij dus bij opstart de bluetooth service en wifi uitzetten. 
+**Tijdens het opstarten zal je een fail te zien krijgen, dit is normaal want hij zal jouw bluetooth service testen en deze heb je zojuist afgezet** 
 
 
 ##### Sudo rechten toekennen
