@@ -234,46 +234,43 @@ Dit is een optie nadat je de firewall hebt ingesteld. Omdat je u Raspberry Pi ge
 
 -	Installeren van raspberry os en clonen van os in windows.
 
-  https://www.makeuseof.com/tag/install-operating-system-raspberry-pi/
-  https://www.raspberrypi.org/magpi/pi-sd-etcher/
+    https://www.makeuseof.com/tag/install-operating-system-raspberry-pi/
+    https://www.raspberrypi.org/magpi/pi-sd-etcher/
 
 -	SSG keys instellen via putty en putty key gen.
 
-  https://devops.profitbricks.com/tutorials/use-ssh-keys-with-putty-on-windows/
-  https://www.raspberrypi.org/forums/viewtopic.php?f=36&t=181846
-  https://www.ssh.com/ssh/putty/windows/puttygen
+    https://devops.profitbricks.com/tutorials/use-ssh-keys-with-putty-on-windows/
+    https://www.raspberrypi.org/forums/viewtopic.php?f=36&t=181846
+    https://www.ssh.com/ssh/putty/windows/puttygen
 -	Wachtwoord uitschakelen na ssh verbinding.
 
-  https://www.cyberciti.biz/faq/how-to-disable-ssh-password-login-on-linux/
-  http://support.hostgator.com/articles/specialized-help/technical/how-to-disable-password-authentication-for-ssh
-  https://stackoverflow.com/questions/20898384/ssh-disable-password-authentication
-  https://lani78.com/2008/08/08/generate-a-ssh-key-and-disable-password-authentication-on-ubuntu-server/
+    https://www.cyberciti.biz/faq/how-to-disable-ssh-password-login-on-linux/
+    http://support.hostgator.com/articles/specialized-help/technical/how-to-disable-password-authentication-for-ssh
+    https://stackoverflow.com/questions/20898384/ssh-disable-password-authentication
+    https://lani78.com/2008/08/08/generate-a-ssh-key-and-disable-password-authentication-on-ubuntu-server/
 -	Initialisatie script.
 
-  https://kubecloud.io/setup-a-kubernetes-1-9-0-raspberry-pi-cluster-on-raspbian-using-kubeadm-f8b3b85bc2d1
-  https://stackoverflow.com/questions/21612980/why-is-usr-bin-env-bash-superior-to-bin-bash
+    https://kubecloud.io/setup-a-kubernetes-1-9-0-raspberry-pi-cluster-on-raspbian-using-kubeadm-f8b3b85bc2d1
+    https://stackoverflow.com/questions/21612980/why-is-usr-bin-env-bash-superior-to-bin-bash
 
 -	Beveiliging van de raspberry pi (extra veiligheidsopties).
 
-  https://www.raspberrypi.org/documentation/configuration/security.md
+    https://www.raspberrypi.org/documentation/configuration/security.md
   
 - CPU / GPU split
 
- https://haydenjames.io/raspberry-pi-3-overclock/
- https://www.raspberrypi.org/documentation/configuration/config-txt/README.md
- https://www.raspberrypi.org/documentation/configuration/config-txt/memory.md
+   https://haydenjames.io/raspberry-pi-3-overclock/
+   https://www.raspberrypi.org/documentation/configuration/config-txt/README.md
+   https://www.raspberrypi.org/documentation/configuration/config-txt/memory.md
  
  - Uitschakelen bluetooth en wifi
  
- https://www.raspberrypi.org/forums/viewtopic.php?f=63&t=138610
+   https://www.raspberrypi.org/forums/viewtopic.php?f=63&t=138610
  
  - Image verkleinen
  
- http://www.aoakley.com/articles/2015-10-09-resizing-sd-images.php
- 
- https://github.com/Drewsif/PiShrink
- 
-  
+   http://www.aoakley.com/articles/2015-10-09-resizing-sd-images.php
+   https://github.com/Drewsif/PiShrink
 
 
 
