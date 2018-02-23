@@ -41,7 +41,9 @@ Als alles goed gaat moet je dit zien bij de commando `kubectl get nodes`
  
 ### RESET
 Het kan gebeuren dat je opnieuw wilt beginnen door een fout of iets anders. 
-De commando `kubeadm reset` zal de cluster verwijderen en kan je dus opnieuw beginnen. Voer dit uit op de node(s) en op de master
+De commando `kubeadm reset` zal de cluster verwijderen en kan je dus opnieuw beginnen. Voer dit uit op de node(s) en op de master.
+
+Om bepaalde instellingen te verwijderen die niet default mee verwijderd worden met de reset commando kan je volgende [Cheatsheet](http://khmel.org/?p=1092) gebruiken.
 
 # Wat nog instellen 
 - Pods , en services uitproberen 
