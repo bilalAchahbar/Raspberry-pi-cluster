@@ -15,7 +15,7 @@ Op de master ga je de `kubeadm`initialiseren dit doe je door middel van volgende
     
 Deze commando gaat even tijd in beslag nemen. Nadat deze commando is afgelopen zie je het volgende scherm te zien
 
-![Linux ssh](/images/kubeMasterOutput.jpg)
+![kuadm init](/images/kubeMasterOutput.JPG)
 
 Zoals je kan zien op het scherm zal je deze 3 stappen moeten uitvoeren alvorens je de cluster kunt runnen
 - configuratie files koppieren naar de juiste map
