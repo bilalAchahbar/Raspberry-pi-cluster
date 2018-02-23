@@ -1,5 +1,14 @@
 # Setup kubernetes cluster
 
+## Uitleg bepaalde concepten
+Wat zijn
+
+- PODS: Dit is een groep of 1 container dat dezelfde netwerk/opslag deelt. De containers in een pod zijn meer gekoppeld met elkaar dan in tegenstelling tot bij een docker swarm , etc... ze worden gemanaged en gedeployed als één unit.
+- NODES: dit is een worker in de kubernetes cluster 
+- MASTER: dat is de baas die gaat zeggen tegen de nodes wie wat moet draaien. De master kan ook een node zijn.
+- DEPLOYMENTS: dit is een manier om een staat vast te zetten aan meerdere pods zodat je meerdere pods makkelijker kan managen.
+- NETWERK: kubernetes werkt met netwerk plugins zodat je een netwerklaag kunt gebruiken opdat je pods met elkaar zullen kunenn verbinden. [Hier](https://kubernetes.io/docs/concepts/cluster-administration/networking/#how-to-achieve-this/) Kan je alle uitleg vinden en de verschillende plugins die je kan toepassen
+- REPLICATIONCONTROLLER: **verder bekijken hoe dit werkt**. Maar dit is normaal nodig om ervoor de replica's te managen zodat er altijd wel 1 up and running is.
 ## Voorwaarden
 basic image waar kubernetes en docker al is geinstalleerd
 ## Let's begin
