@@ -57,6 +57,7 @@ Om bepaalde instellingen te verwijderen die niet default mee verwijderd worden m
 # Wat nog instellen 
 - Pods , en services uitproberen 
 - Dashboard
+- Bekijken of weaver beter is als netwerk plugin dan flannel(dit lijkt een populairdere netwerk technologie)
 - Wat gebeurt er als er een pod of nog erger een node uitvalt. 
 - Dit tonen via een dashboard.
 - Etcd , Ingris concepten bekijken en kijken hoe toe te passen
