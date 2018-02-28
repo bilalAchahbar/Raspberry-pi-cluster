@@ -3,12 +3,12 @@
 ## Uitleg bepaalde concepten
 Wat zijn
 
-- PODS: Dit is een groep of 1 container dat dezelfde netwerk/opslag deelt. De containers in een pod zijn meer gekoppeld met elkaar dan in tegenstelling tot bij een docker swarm , etc... ze worden gemanaged en gedeployed als één unit.
+- PODS: Dit is een groep van 1 of meerdere containers dat een image en verdere libraries / dependencies zal runnen . De containers in een pod zijn meer gekoppeld met elkaar dan in tegenstelling tot bij een docker , etc... ze worden gemanaged en gedeployed als één unit.
 - NODES: dit is een worker in de kubernetes cluster 
 - MASTER: dat is de baas die gaat zeggen tegen de nodes wie wat moet draaien. De master kan ook een node zijn.
 - DEPLOYMENTS: dit is een manier om een staat vast te zetten aan meerdere pods zodat je meerdere pods makkelijker kan managen.
 - NETWERK: kubernetes werkt met netwerk plugins zodat je een netwerklaag kunt gebruiken opdat je pods met elkaar zullen kunenn verbinden. [Hier](https://kubernetes.io/docs/concepts/cluster-administration/networking/#how-to-achieve-this/) Kan je alle uitleg vinden en de verschillende plugins die je kan toepassen
-- REPLICATIONCONTROLLER: **verder bekijken hoe dit werkt**. Maar dit is normaal nodig om ervoor de replica's te managen zodat er altijd wel 1 up and running is.
+- REPLICATIONCONTROLLER: dit is normaal nodig om ervoor de replica's te managen zodat er altijd wel 1 up and running is.
 ## Voorwaarden
 basic image waar kubernetes en docker al is geinstalleerd
 ## Let's begin
@@ -54,6 +54,95 @@ De commando `kubeadm reset` zal de cluster verwijderen en kan je dus opnieuw beg
 
 Om bepaalde instellingen te verwijderen die niet default mee verwijderd worden met de reset commando kan je volgende [Cheatsheet](http://khmel.org/?p=1092) gebruiken.
 
+### POD opzetten en scalen over de nodes
+Er zijn wel wat aanpassingen gebeurd sinds de vorige keer namelijk , dat we nu werken met de weaver netwerk dit zet je op met volgende commando `sudo kubectl apply -f "https://cloud.weave.works/k8s/net?k8s-version=$(kubectl version | base64 | tr -d '\n')"`
+
+We kunnen een pod handmatig aanmaken , en daarin een container inzetten door middel van een image te pullen. Maar je kan dit net zoals in docker volledig uitvoeren met een automatisatiescriptje namelijk de yaml file. 
+
+Voor de test/ presentatie yaml file heb ik een standaard yaml file opgezet die een nginx image zal pullen en deze zal zetten in een Replication controller die er voor gaat zorgen dat de container gerepliceerd word en gemanaged word. De yaml file ziet er als volgt uit
+```
+apiVersion: v1
+kind: ReplicationController
+metadata:
+ name: nginx-controller
+spec:
+ replicas: 3
+ selector:
+   name: nginx
+ template:
+   metadata:
+     labels:
+       name: nginx
+   spec:
+     containers:
+       - name: nginx
+         image: nginx
+         ports:
+           - containerPort: 80
+```
+
+Deze yaml file gaat dus 1 container aanmaken die de nginx image zal pullen (van waar juist weet ik niet Docker hub???) deze zal ook 3 replica's maken zodat je steeds 3 pods klaar hebt staan. 
+je runt deze yaml file met deze commando `kubectl create -f naamVanYAML.yml`
+Kubernetes zit zo goed in elkaar dat wanneer je dit instelt dat er 3 pods moeten draaien er zeker van gaat zijn dat er 3 pods gaan draaien. Wanneer je dus 1 pod uitschakelt het automatisch een pod zal restarten.
+Deze pods zullen ook worden gescaled op de available nodes.
+
+Met de commando `kubcetl get nodes -o wide` kan je zien welke ip addressen bij welke pod horen en hoe je er dus zo aangeraakt. 
+
+In deze test omgeving heb ik dus een nginx image opgehaald en in een container gezet en hiervan 2 kopieen aangemaakt. Deze hebben nu 3 individuele ip addressen waar je naar toe kan surfen. Om dit proces te vereenvoudigen ga je werken met een loadbalancer en dus maar surfen naar 1 address en de eerste de beste pod nemen. De gebruiker maakt het niet uit welke pod dit is zolang de webserver maar werkt. Ook hier heeft kubernetes over nagedacht namelijk SERVICES. 
+
+Net zoals alles kan je een service ook in een yaml file declareren dat deze de parameters in een bestand opsomt en runt met 1 kleine commando.
+De service yaml file ziet er als volgt uit
+
+
+```
+kind: Service
+apiVersion: v1
+metadata:
+  name: web-service
+spec:
+  selector:
+    name: nginx
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
+```
+
+Deze service creer je op dezelfde manier als de replicacontroller `Sudo kubectl create -f naamVanService.yaml`
+
+met de commando `kubectl get services` kan je deze service ophalen. 
+
+#### Probleemstelling
+Wanneer je dus de pods up and running zijn en je deze kan zien met de commando `sudo kubectl get pods -o wide` ga je ook zien dat de 3 pods verdeeld worden over de nodes die beschikbaar zijn. 
+Probleem stelling is nu dat wanneer je 1 node zal uitschakelen hij wel de pods zal verdelen naar de andere node maar hij hiervoor 4 tot 5 minuten voor nodig heeft. Dat is niet echt productie gericht in een raspberry pi cluster.
+
+#### Mogelijke oplossing
+De kube-controller-manager heeft een parameter genaamd pod-eviction-timeout. Deze staat standaard op 5 minuten en moet veranderd worden naar een zo min mogelijke overgangstijd. Aangezien we alles zoveel mogelijk willen automatiseren gaan we de kubeadm initialiseren met een configuratie file. 
+Die het volgende bevat 
+
+```
+apiVersion: kubeadm.k8s.io/v1alpha1
+kind: MasterConfiguration
+controllerManagerExtraArgs:
+  pod-eviction-timeout: 10s
+  node-monitor-grace-period: 10s.
+  node-monitor-period: 2s
+```
+
+de pod-eviction-timeout gaat wachten op de node om de controller manager up te daten. , de node grace period geeft de node de tijd om unresponsive te zijn. de node monitor period is de tijd dat de node de status gaat syncing met de node controller. 
+
+Als je de kubeadm initialiseert met deze configuratiefile met de commando `sudo kubeadm init --config naamConfFile.yaml` zal je de kubernetes cluster instellen met de juiste configuraties voor zo high available mogelijke uitkomst. Nu zal kubernetes binnen de 10 seconden reageren wanneer een node uitvalt en dat is meer high available dan de default 5 minuten. 
+# High available
+WAT WERKT ER AL
+- Wanneer een pod word gekilled zal er automatisch een andere pod worden opgezet (replicationcontroller fixt dees)
+- Wanneer je een node afzet gaat de pod die daarop draaide op "unready" worden gezet en een nieuwe pod worden aangemaakt op de available node. 
+  - Er moet nog worden gezien om de pod die draaide op de node die is uitgevellen te terminaten. Want dit gebeurd enkel als de node terug is opgestart.
+
+WAT MOET NOG WORDEN GEDAAN
+- Wanneer een nieuwe node wordt toegevoegd aan de cluster moet kubernetes dit automatisch zelf detecteren (Kijk naar auto horizontal scaling). 
+- Wanneer de master uitvalt moet niet heel de boel plat liggen (2 raspberry's als master en node gebruiken)
+- kube monkeys: wanneer een pod word gekilled zal er een nieuwe worden aangemaakt . Maar dit is bij een manuele kill. Wat gebeurd er bij een automatische kill.
+- storage high available maken (ceph). eens bekijken
 # Wat nog instellen 
 - Pods , en services uitproberen 
 - Dashboard
@@ -74,3 +163,7 @@ Belangrijke bron:
 https://blog.yo61.com/kubernetes-on-a-5-node-raspberry-pi-2-cluster/
 
 
+volledige kubernetes opzet
+https://kubecloud.io/setup-a-kubernetes-1-9-0-raspberry-pi-cluster-on-raspbian-using-kubeadm-f8b3b85bc2d1
+de yaml files voor de replication controller en de service
+https://blog.jetstack.io/blog/k8s-getting-started-part3/
