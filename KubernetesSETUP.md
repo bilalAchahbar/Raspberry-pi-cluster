@@ -144,11 +144,11 @@ WAT MOET NOG WORDEN GEDAAN
 - kube monkeys: wanneer een pod word gekilled zal er een nieuwe worden aangemaakt . Maar dit is bij een manuele kill. Wat gebeurd er bij een automatische kill.
 - storage high available maken (ceph). eens bekijken
 # Wat nog instellen 
-- Pods , en services uitproberen 
 - Dashboard
-- Bekijken of weaver beter is als netwerk plugin dan flannel(dit lijkt een populairdere netwerk technologie)
 - Wat gebeurt er als er een pod of nog erger een node uitvalt. 
+  - Hier heb ik al een aardige goede begin maar moet en kan nog beter 
 - Dit tonen via een dashboard.
+   - Dit zou mooi zijn op een presentatie maar is geen vereiste
 - Etcd , Ingris concepten bekijken en kijken hoe toe te passen
 - Wat met beveiliging over de nodes (ook mss aanpassingen aanbrengen aan pi)
 - chaos monkeys of zoals ze dit in de kubernetes wereld noemen  [ Kube monkey](https://github.com/asobti/kube-monkey).
