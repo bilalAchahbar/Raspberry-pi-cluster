@@ -1,12 +1,12 @@
 # Tutorial hoe zet je een bitscope blade rack in elkaar
 
 Voor de hele tutorial heb ik een youtube video gevolgd die exact dezelfde bitscope blade quattro gebruikt.
-In de video wordt goed uitgelegd hoe je stap per stap alles in elkaar moet steken
+In de video wordt goed uitgelegd hoe je stap per stap alles in elkaar moet steken.
 
 # **TUTORIAL**
 
 ## Youtube link met de volledige tutorial en stap per stap uitgelegd
-[How did they do it](https://www.youtube.com/watch?v=p9YPBuqGr4o)
+[Youtube](https://www.youtube.com/watch?v=p9YPBuqGr4o)
 
 
 ## Foto's van mijn eigen setup
