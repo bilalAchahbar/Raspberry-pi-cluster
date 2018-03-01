@@ -5,7 +5,7 @@ In de video wordt goed uitgelegd hoe je stap per stap alles in elkaar moet steke
 
 # **TUTORIAL**
 
-## Youyube link met de volledige tutorial en stap per stap uitgelegd
+## Youtube link met de volledige tutorial en stap per stap uitgelegd
 [How did they do it](https://www.youtube.com/watch?v=p9YPBuqGr4o)
 
 
