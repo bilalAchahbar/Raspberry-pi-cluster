@@ -6,6 +6,23 @@
 ##### Geschreven door Bilal Achahbar op 14/02/2018
 ##### Bron config and install docker , cgroup , swap , kubeadm: https://kubecloud.io/setup-a-kubernetes-1-9-0-raspberry-pi-cluster-on-raspbian-using-kubeadm-f8b3b85bc2d1
 
+gebruikersnaam=$(whoami)
+
+#CPU/GPU split
+sudo sh -c "echo 'gpu_mem=16' >> /boot/config.txt"
+
+#bluetooth en wifi uitschakelen
+sudo sh -c " echo 'dtoverlay=pi3-disable-wifi' >> /boot/config.txt"
+sudo sh -c " echo 'dtoverlay=pi3-disable-bt' >> /boot/config.txt"
+
+
+
+#user toevoegen aan sudo group
+
+sudo adduser $gebruikersnaam sudo
+sudo usermod -aG sudo $gebruikersnaam
+
+
 
 #Omdat dit een initialisatie script is en runt voor de eerste keer gaan we het huidig systeem updaten en upgraden
 sudo apt-get update -y && upgrade -y && dist-upgrade -y
@@ -23,14 +40,11 @@ touch ~/.ssh/authorized_keys
 chmod 700 ~/.ssh
 chmod 600 ~/.ssh/authorized_keys
 
-#user toevoegen aan sudo group
-sudo usermod -aG sudo xplore
-
 	
 
 #installeren van docker en user toevoegen aan docker group
 curl -sSL https://get.docker.com | sh
-sudo usermod -aG docker xplore
+sudo usermod -aG docker $gebruikersnaam
 
 #Swap uitschakelen
 sudo dphys-swapfile swapoff && \
