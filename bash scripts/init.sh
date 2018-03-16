@@ -1,10 +1,13 @@
 #!/usr/bin/env bash
 
-##### Beschrijving: Dit bash script dient om de nodige software die nodig is voor elke raspberri pi te initialiseren in de basic image
+##### Beschrijving: Dit bash script dient om de nodige software die nodig is voor elke raspberri pi te initialiseren in de basic image (Raspbian stretch lite)
+##### Het alle nodige aanpassen doen om zo min mogelijk extra's te gebruiken 
+##### Bluetooth en wifi zullen dus uitgeschakeld worden , en de gpu zal naar het minimum worden geplaatst
 ##### Het gaat het volgende installeren: Docker , kubeadm. 
 ##### Ook zal het volgende configuratie aanpassen: Swap uitschakelen , cgroup enablen in boot 
 ##### Geschreven door Bilal Achahbar op 14/02/2018
 ##### Bron config and install docker , cgroup , swap , kubeadm: https://kubecloud.io/setup-a-kubernetes-1-9-0-raspberry-pi-cluster-on-raspbian-using-kubeadm-f8b3b85bc2d1
+
 
 
 #CPU/GPU split
@@ -18,8 +21,8 @@ sudo sh -c " echo 'dtoverlay=pi3-disable-bt' >> /boot/config.txt"
 
 #user toevoegen aan sudo group
 
-sudo adduser xplore sudo
-sudo usermod -aG sudo xplore
+sudo adduser $USER sudo
+sudo usermod -aG sudo $USER
 
 
 
@@ -42,8 +45,8 @@ chmod 600 ~/.ssh/authorized_keys
 	
 
 #installeren van docker en user toevoegen aan docker group
-curl -sSL https://get.docker.com | sh
-sudo usermod -aG docker xplore
+curl -sSL get.docker.com | sh && \
+sudo usermod $USER -aG docker 
 
 #Swap uitschakelen
 sudo dphys-swapfile swapoff && \
@@ -68,3 +71,9 @@ curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key add
   echo "deb http://apt.kubernetes.io/ kubernetes-xenial main" | sudo tee /etc/apt/sources.list.d/kubernetes.list && \
   sudo apt-get update -q && \
 sudo apt-get install -qy kubeadm
+
+
+
+#Reboot
+read -s -n 1 -p "Je zal opnieuw moeten opstarten, tik op een key om opnieuw op te starten"
+sudo reboot
