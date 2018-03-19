@@ -22,12 +22,13 @@ Voor dit project heb ik de gebruikersnaam , wachtwoord en hostname veranderd.  I
     -  [Win32diskimager voor de image te creëren](https://sourceforge.net/projects/win32diskimager/)
 
 -  Bash scripts die gebruikt zijn voor het automatiseren van bepaalde instellingen.
-   `changeHostname.sh`
-   `newMachineId.sh`
-   `init.sh`
-    `xplore`
-    `update`
-    Omdat het veel werk is om een bash script telkens te laten runnen met de `./` ervoor heb ik alle bash scripts toegevoegd aand e /usr/local/bin/ folder zodat je de bash script direct vanuit elke directory kan oproepen. De scripts zelf staan allemaal ook in de folder  `Bashscripts` in de home folder van de basic image als je deze in detail wilt bekijken.
+   - `changeHostname.sh`
+   - `newMachineId.sh`
+   - `init.sh`
+   -  `xplore`
+   -  `update`
+   
+    Omdat het veel werk is om een bash script telkens te laten runnen met de `./` ervoor heb ik alle bash scripts toegevoegd aand e `/usr/local/bin/` folder zodat je de bash script direct vanuit elke directory kan oproepen. De scripts zelf staan allemaal ook in de folder  `Bashscripts` in de home folder van de basic image als je deze in detail wilt bekijken.
 #### Keuze image
 Ik heb hier gekozen voor een Raspberri pi stretch lite .Tijdens het schrijven van deze README is dit nog de Raspberry pi stretch lite dit kan in de toekomst veranderen maar er zal steeds een lite versie bestaan van de nieuwe update van Raspbian.
 De reden dat ik de lite versie heb gebruikt is omdat dit de ideale os is voor een server omgeving. Bij de gewone Raspbian (met GUI) zijn er te veel utilities die we zowiezo niet nodig hebben (Deze programma's zijn perfect wanneer je een raspberri pi gebruikt voor andere doeleinden zoals leren programmeren of   waar je een grafische interface voor nodig hebt) . Ookal kan je in de Raspbian image opstarten in command line is de lite versie veel kleiner. Al deze benodigdheden die we niet nodig hebben zijn al weggehaald door Raspberry zelf in een mooie gui loze omgeving: de lite versie van de huidige Rasbian versie.
@@ -101,14 +102,14 @@ Als je deze 2 lijnen hebt toegevoegd aan de configuratie file zal hij dus bij op
 **Tijdens het opstarten zal je een fail te zien krijgen, dit is normaal want hij zal jouw bluetooth service testen en deze heb je zojuist afgezet** 
 
 
-####2 Sudo rechten toekennen
+#### 2 Sudo rechten toekennen
 In Linux word elke user dat je toegevoegd aan de sudo groep, een sudo user en krijgt dus alle sudo rechten
 1. Nieuwe user toevoegen aan sudo group
    - `sudo adduser Gebruiker sudo`
 2. Bestaande gebruiker aanpassen
    - `Usermod -aG sudo Gebruiker`
   
-####3 SSH verbinding
+#### 3 SSH verbinding
 Om de ssh service automatisch op te starting tijdens de boot voer je volgende commando uit. Deze zal een link maken in de boot folder naar de ```/etc/init.d/servicenaam```.Zo hoef je niet elke keer handmatig de service op te starten. (Deze instelling word ingesteld in het `ìnit.sh`script).
    - `sudo update-rc.d ssh defaults`
 
@@ -120,6 +121,7 @@ Als je ssh verbinding is opgestart kan je proberen verbinden vanuit je host naar
 In linux is de ssh client  standaard al geinstalleerd. Is dit niet het geval kan je dit doen door `sudo apt-get install openssh-server`Deze zal de server en de client voor je installeren. 
 Met de commando `ssh-keygen -t rsa -C comment`_(Geef als comment de naam van jouw pc of jou naam mee zodat je in de raspberry pi later de keys van de verschillende pc’s makkelijker kan achterhalen.)_ ga je de ssh keys genereren. Volg de instructies op het scherm. Je zal gevraagd worden om de keys op te slaan in een map naar keuze of de default home folder. Verder krijg je de vraag om een wachtwoord in te geven , deze dient om de private key te beveiligen.
 Bij een succesvolle creatie van een ssh key krijg je soortgelijk scherm te zien
+
 ![Linux ssh](/images/linux_ssh.jpg)
 
 Nu zal je de public key van je hostmachine moeten kopiëren om deze in je raspberri pi op te slaan en dat je raspberri pi jouw host machine als authorized host kan zien. Dit kan je doen met volgende commando:
@@ -154,24 +156,24 @@ Wanneer je nu wilt verbinden met de Raspberry pi vanuit je windows host ga je de
 Wanneer je nu verbind met je raspberry zal je niet gevraagd worden om het wachtwoord in te geven want hij bevestig jouw machine door de ssh key. Je kan zelf de default gebruikersnaam instellen in putty zodat hij je ook niet zal vragen achter jouw gebruikersnaam. Door in het tabblad Connection--> Date de auto-login username in te stellen. Zo zal je bij je volgende sessie direct verbonden zijn met je raspberry pi. Vergeet zeker niet om deze instellingen in putty  op te slaan zodat je niet steeds de keys en de default gebruikersnaam moet meegeven.
 
 #### Extra beveiliging
-##### Wachtwoord uitschakelen na SSH verbinding
+##### 1. Wachtwoord uitschakelen na SSH verbinding
 Om je beveiliging te verbeteren ga je het wachtwoord uitschakelen nadat je verbonden bent met je ssh zodat enkel de pc’s die verbonden zijn met de ssh key kunnen verbinden. Er zijn hiervoor 3 lijnen in het configuratie bestand dat je hiervoor moet aanpassen.Sla zeker de veranderingen op. Restart de ssh service nadat je het bestand hebt opgeslagen zodat de veranderingen toegepast worden. 
 Config file : `/etc/ssh/sshd_config`
 -	ChallengeResponseAuthentication no
 -	PasswordAuthentication no
 -	UsePAM no
 
-###### **Root login uitschakelen via ssh**
+###### 2. Root login uitschakelen via ssh
 Als extra beveiliging is het zeker van belang dat  je niet kan inloggen met root in je ssh. Deze instelling staat default uit. Wanneer je toch wilt instellen dat de je wel met de root credentials kunt inloggen via ssh  (wat niet aangeraden is) moet je de lijn PermitRootLogin veranderen naar yes. Dan zal je met root kunnen inloggen. Aangezien deze lijn niet in de default configuratie zit word er dit default uitgeschakeld.
      - De configuratie gebeurt in de config file van ssh
     - `/etc/ssh/sshd_config`
-###### **Automatiseren**
+###### 3. Automatiseren
 
 Om dit nu telkens handmatig te veranderen nadat je bent ingelogd is wat veel werk daarom is er een script voorzien dat dit voor jou gaat doen. In de home folder zit er een bash script `xplore`. Dit bash script zal de 3 lijnen die  nodig zijn voor het wachtwoord uit te schakelen voor zijn werk nemen. Het heeft 2 parameters genaamd *lock* en *unlock*. Lock zal de configuratie gegevens veranderen zodat je wachtwoord wordt uitgeschakeld. Je kan deze terugzetten naar default instellingen door de parameter unlock mee te geven. Zie wel dat je deze bash script met sudo runt aangezien je bezig bent in de /etc/ folder en het de service ssh opnieuw opstart.  
 
 
 
-##### Wees altijd up-to-date
+##### 4. Wees altijd up-to-date
 Wanneer je er een gewoonte van maakt om je raspberry op een regelmatige basis te updaten zorg je er ook voor dat je de nodige beveiliging fixes van linux meekrijgt. Voor linux zijn hiervoor 3 commando’s voorzien.
 -	Sudo apt-get update
 -	Sudo apt-get upgrade
@@ -230,8 +232,8 @@ Maar om deze 3 commando's nu telkens je een image burnt uit te voeren is te veel
 
 - Nieuwe machine id genereren
 In het pishrink.sh bestand gaan we een lijn toevoegen namelijk newMachine.sh, die word opgeroepen.
-
->newMachineId.sh
+```
+newMachineId.sh
 sleep 5
 raspi_config_expand
 echo "WARNING: Using backup expand..."
@@ -239,7 +241,7 @@ sleep 5
 do_expand_rootfs
 echo "ERROR: Expanding failed..."
 sleep 5
-
+```
 
 
 #### Extra veiligheidsopties voor betere security (optioneel)
