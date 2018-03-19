@@ -79,7 +79,7 @@ Succesvol master aangemaakt en nodes toegevoegd
 
 Wanneer je alle stappen succesvol hebt uitgevoerd zou de commando `kubectl get nodes` dit scherm moeten tonen. 
 Daar kan je zien welke nodes er zijn toegevoegd en welke de master is. hier kan je ook zien wat de status is van elke node.
-**get nodes afbeelding**
+
 
 ```
 De kubernetes testen
