@@ -1,5 +1,29 @@
 # Raspberry pi basic image set-up 
 
+
+## Inhoudsopgave
+
+- [Beschrijving](#beschrijving)
+- [Basic Credentials](#basic-credentials)
+- [Prerequisites](#prerequisites)
+- [Keuze image](#keuze-image)
+- [SD kaart opzetten](#sd-kaart-opzetten-voor-eerste-startup)
+- [Initialiseren](#eenmaal-de-raspbian-stretch-lite-is-opgezet)
+- [init script](#init-script)
+- [Headless server](#1-headless-server)
+- [CPU / GPU split](#11-cpu-gpu-split)
+- [Bluetooth en wifi](#12-bluetooth-en-wifi)
+- [Sudo rechten toekennen](#2-sudo-rechten-toekennen)
+- [SSH verbinding](#3-ssh-verbinding)
+- [SSH key](#ssh)
+- [Programma's die geinstalleerd worden op de basic image](#wat-is-er-al-geinstalleerd-op-de-basic-image)
+- [Image clonen / back-uppen](#image-clonen-back-uppen)
+- [Extra veiligheidsopties](#extra-veiligheidsopties-voor-betere-security)
+- [Stappenplan](#stappen)
+- [Bronnenlijst](#bronnenlijst)
+
+
+
 ## Beschrijving
 Dit is een readme van hoe  de basic image die werd geconfigureerd voor xplore group werd aangemaakt. Deze image heeft een Raspian stretch lite besturingsysteem en werd geconfigureerd met de nodige programma’s en de nodige configuraties voor een basic omgeving voor een kubernetes omgeving. Met als doel deze image te clonen en te gebruiken op elke kubernetes node, master.
 
@@ -52,7 +76,7 @@ Ik werk met een azerty toetsenbord en zal dus voor gemaks redenen de keyboard in
    - Localisation options
    - Change keyboard Layout
 
-#### Gebruikersnaam , wachtwoord intellen
+#### Gebruikersnaam  wachtwoord intellen
 
 Omdat je in je basic image al een gebruikernaam , wachtwoord  ingesteld wilt hebben. Kan je de standaard naamgeving voor deze instelling als volgt veranderen.
 1.	Om dit te doen activeer je de root gebruiker.Dat doe je door het commando `sudo passwd root` in te geven. Dit is nodig omdat je ingelogd bent in de pi user en je in linux je eigen naam niet kan veranderen als je ingelogd bent.
@@ -68,12 +92,12 @@ Nu kan je inloggen met de nieuwe gebruikersnaam. Weet dat je nog steeds de defau
 - Kijk **ZEKER** na of je nieuwe gebruiker nog steeds administrator rechten heeft door een sudo commando uit te voeren.
 
 
-### Init.sh
+### Init script
 
 Tijdens het initialiseren van de basic image heb ik veel instellingen aangepast. Deze instellingen worden automatisch aangepast in een basic bash scriptje `init.sh`. Hier is alvast een extra uitleg van de instellingen die ik heb aangepast
 #### 1. Headless server
 Een headless systeem is geconfigureerd om te werken zonder een monitor (head). Dit is dus voor een systeem dat je zal gebruiken als een soort server. Omdat we onze Raspbian cluster zullen gebruiken zonder een monitor en we hem met een ethernet verbinding zullen verbinden kunnen we bepaalde instellingen uitschakelen of verbeteren zodat we optimaal gebruik maken van het systeem. Deze 2 aanpassingen worden uitgevoerd in het `init.sh` script, je hoeft je hiervoor dus geen zorgen over te maken. Om toch een beeld te geven waarom we dit doen en hoe we dit gaan doen ga ik een kort woordje uitleg geven.
-##### 1.1 CPU / GPU split
+##### 1.1 CPU GPU split
 De Raspberry pi gebruikt de configuratie file(`/boot/config.txt`) in plaats van de BIOS dat je vind in een normale pc.
 Hierin kan je de parameters veranderen voor de GPU en de  CPU. De parameters die in de config files staat en die moet veranderd worden is de gpu_mem.  gpu_mem word getoond in megabytes en split het RAM geheugen tussen de GPU en de CPU. De waarde die je meegeeft aan de gpu_mem word ingesteld voor de GPU. De overgebleven geheugen word gegeven aan de CPU. Wanneer je dus de raspberry pi zal gebruiken voor een gaming emulator geef je de GPU zoveel mogelijk waarde. Aan de andere kant wanneer je de raspberry pi zal gebruiken voor een server die nooit of bijna nooit word aangesloten op een pc scherm , en die dus meer cpu nodig heeft en zo min mogelijk gpu geeft ga je de waarde van gpu_mem op het minimum zetten.
 
@@ -163,7 +187,7 @@ Config file : `/etc/ssh/sshd_config`
 -	PasswordAuthentication no
 -	UsePAM no
 
-###### 2. Root login uitschakelen via ssh
+##### 2. Root login uitschakelen via ssh
 Als extra beveiliging is het zeker van belang dat  je niet kan inloggen met root in je ssh. Deze instelling staat default uit. Wanneer je toch wilt instellen dat de je wel met de root credentials kunt inloggen via ssh  (wat niet aangeraden is) moet je de lijn PermitRootLogin veranderen naar yes. Dan zal je met root kunnen inloggen. Aangezien deze lijn niet in de default configuratie zit word er dit default uitgeschakeld.
      - De configuratie gebeurt in de config file van ssh
     - `/etc/ssh/sshd_config`
@@ -181,7 +205,7 @@ Wanneer je er een gewoonte van maakt om je raspberry op een regelmatige basis te
 
 Omdat deze 3 commando’s op een regelmatige basis moeten worden uitgevoerd is er hiervoor een bash script `update` voorzien in de home folder. Dit script bevat de 3 commando’s om je systeem up te daten en kan op een latere tijdstip altijd worden aangevuld of worden aangepast om het automatiseren van updates te vervolledigen.
 
-#### Programma's die geinstalleerd worden op de basic image
+#### Wat is er al geinstalleerd op de basic image
 In het `init.sh`script werden naast instellingen voor het systeem ook nog  bepaalde programma's geinstalleerd om een basic image te creeren voor je kubernetes omgeving. Zodat je enkel de image moet branden op een sd kaart en direct vertrokken bent om een nieuwe node in te stellen.
 de programma's die werden geinstalleerd zijn
 - VI en nano zijn al geinstalleerd maar ik vind vim iets makkelijker om mee te werken dus heb ik vim  geinstalleerd in het `init.sh`script. 
@@ -198,7 +222,7 @@ de programma's die werden geinstalleerd zijn
      - Aangezien kubeadm op elke node word geinstalleerd is het handig dat dit al is gebeurt in de basic os
      - Het initialiseren van de master en de nodes gaan we later instellen want dit gebeurt nadat je de basic image hebt opgestart zodat je onderscheid kan maken van een master en van een node
      
-#### Image clonen / back-uppen
+#### Image clonen back-uppen
 
 Via het programma “Win32 Disk imager” (zie “te installeren software”) kan je de OS waarmee je nu alle instellingen hebt ingesteld clonen naar een image. Zodat je deze image met jouw instellingen altijd bij de hand hebt voor een back-up of om een nieuwe kubernetes node toe te voegen. 
 Als je het programma opent ga je in het zoekveld een pad en naam geven aan de image die je wilt maken (De eerste keer zal hij zeggen dat deze image niet bestaat en gaat hij zelf de image aanmaken) zorg er zeker voor dat de schijfletter rechtsboven klopt met de schijfletter van de sd kaart. Klik vervolgens op “Lezen” en het programma zal je sd kaart clonen naar een image bestand.
@@ -244,7 +268,7 @@ sleep 5
 ```
 
 
-#### Extra veiligheidsopties voor betere security (optioneel)
+#### Extra veiligheidsopties voor betere security
  Deze instellingen heb ik niet in mijn basic image ingesteld omdat ik een image zal maken die voor zowel de node als de master dezelfde gaat zijn. De veiligheidsopties moeten nie op elke node worden geinstalleerd. Voor te bekijken hoe je deze instellingen toepast bekijk je de [beveiligingsopties pagina](https://www.raspberrypi.org/documentation/configuration/security.md) in de raspberry documentatie.
 
 
