@@ -17,6 +17,17 @@ Allereerst zet je de master en de nodes klaar
 - Hostnames veranderen
      - Hiervoor staat er al een script klaar `changeHostname.sh` 
 - Zorg ervoor dat de ip addressen static zijn aangezien we niet willen dat de dhcp ons nieuwe ip addressen geeft eenmaal de cluster in een server rack zit.
+     - Hiervoor moeten we de file `/etc/dhcpcd.conf`aanpassen
+     - Als je met je cursor tot het einde van de file navigeert , zal je volgende lijnen te zien krijgen
+     
+            - "#Example static ip configuration"
+      - Daar na zie je een hoop configuraties voor je eth0 in te stellen. de comment  deze lijnen en verander de addressen naar jouw static ip.
+```
+    interface eth0
+    static ip_address=xx.xx.xx.xx/24
+    static routers=xx.xx.xx.xx
+    static domain_name_servers=xx.xx.xx.xx
+```
 
 Eenmaal dit veranderd is kunnen we beginnen.
 ### kubeMaster
@@ -46,7 +57,7 @@ Er zijn heel veel verschillende netwerk plugins voor kubernetes . Voor mijn setu
 Oké nu is de master geconfigureerd en kan je beginnen met nodes toevoegen.
 *Een tip voer volgende commando uit `watch kubectl get nodes`deze gaat de commando get nodes om de x aantal seconden blijven uitvoeren en zo kan je op je master terminal zien dat er nieuwe nodes zijn toegevoegd en runnen.*
 
-**WEAVER NETWORK screenshot** 
+![weave network](/images/weave-network.png)
 
 ```
 Initialiseren van de node
@@ -57,8 +68,8 @@ Als je de basic image hebt gebruikt zijn alle programma's al geinstalleerd voor 
  - Deze kan je kopieëren naar de node door middel van de `scp`commando , dat kopieert over ssh. 
  - Als je nu naar de node gaat kan je zien dat de joinKey.txt commando in de home folder aanwezig is. 
  - Voer de inhoud van dit text bestandje uit en de node zal worden toegevoegd aan de cluster
-
-**screenshot toegevoegd aan cluster ** 
+ 
+![cluster](/images/nodeJoin.png)
 
 Als je deze commando invoert krijg je een melding terug "this node has joined the cluster". Als je mijn tip hebt gebruikt voor de master met de watch commando zal je bij elke node die je hebt toegevoegd kunnen zien dat ze worden toegevoegd aan de cluster. GEEN schrik als je ziet dat de status nog op "unready" staat kubernetes heeft nog even tijd nodig om het netwerk in te stellen . Als je na 5 minuten nog steeds unready ziet dan is er wel iets mis en dan moet je gaan debuggen.  
 
@@ -193,10 +204,14 @@ https://blog.hypriot.com/post/setup-kubernetes-raspberry-pi-cluster/
 
 raspberry pi cluster , met kubernetes 
 Belangrijke bron: 
+
 https://blog.yo61.com/kubernetes-on-a-5-node-raspberry-pi-2-cluster/
 
 
 volledige kubernetes opzet
+
 https://kubecloud.io/setup-a-kubernetes-1-9-0-raspberry-pi-cluster-on-raspbian-using-kubeadm-f8b3b85bc2d1
-de yaml files voor de replication controller en de service
+
+De yaml files voor de pods en de service
+
 https://blog.jetstack.io/blog/k8s-getting-started-part3/
