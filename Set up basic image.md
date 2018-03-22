@@ -15,7 +15,7 @@
 - [Bluetooth en wifi](#12-bluetooth-en-wifi)
 - [Sudo rechten toekennen](#2-sudo-rechten-toekennen)
 - [SSH verbinding](#3-ssh-verbinding)
-- [SSH key](#ssh)
+- [SSH key](#ssh-keys-aanmaken-op-je-host-machine)
 - [Programma's die geinstalleerd worden op de basic image](#wat-is-er-al-geinstalleerd-op-de-basic-image)
 - [Image clonen / back-uppen](#image-clonen-back-uppen)
 - [Extra veiligheidsopties](#extra-veiligheidsopties-voor-betere-security)
@@ -140,7 +140,7 @@ Om de ssh service automatisch op te starting tijdens de boot voer je volgende co
    
 Als je ssh verbinding is opgestart kan je proberen verbinden vanuit je host naar de raspberry pi. Om nu SSH keys te gebruiken vanuit linux , windows of macOS zal je volgende stappen moeten volgen. Zie zeker dat je de `init.sh`script hebt uitgevoerd in het begin om de mappen en bestanden die nodig zijn voor de ssh keys op te slaan op je raspberry pi aan te maken.
 
-### SSH
+### SSH keys aanmaken op je host machine
 ##### SSH key aanmaken in linux 
 In linux is de ssh client  standaard al geinstalleerd. Is dit niet het geval kan je dit doen door `sudo apt-get install openssh-server`Deze zal de server en de client voor je installeren. 
 Met de commando `ssh-keygen -t rsa -C comment`_(Geef als comment de naam van jouw pc of jou naam mee zodat je in de raspberry pi later de keys van de verschillende pc’s makkelijker kan achterhalen.)_ ga je de ssh keys genereren. Volg de instructies op het scherm. Je zal gevraagd worden om de keys op te slaan in een map naar keuze of de default home folder. Verder krijg je de vraag om een wachtwoord in te geven , deze dient om de private key te beveiligen.
@@ -303,6 +303,8 @@ Je basic configuratie is klaar om te burnen op een image file
 - Om je nieuwe image te burnen op een sd kaart gebruik het programma Etcher
 
 Proficiat je hebt nu een image klaar die alle instellingen voor een headless Raspberry pi met de juiste configuratie en programma's voor een kubernetes cluster ingesteld.
+
+Om deze image nu te branden op een sd kaart gebruik je weer etcher zoals we in het [begin](#sd-kaart-opzetten-voor-eerste-startup) hebben gedaan.
 #### Maintainer
 
 - Bilal Achahbar
