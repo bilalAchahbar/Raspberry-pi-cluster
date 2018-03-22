@@ -123,23 +123,80 @@ de pod-eviction-timeout gaat wachten op de node om de controller manager up te d
 
 Als je de kubeadm initialiseert met deze configuratiefile met de commando `sudo kubeadm init --config naamConfFile.yaml` zal je de kubernetes cluster instellen met de juiste configuraties voor zo high available mogelijke uitkomst. Nu zal kubernetes binnen de 10 seconden reageren wanneer een node uitvalt en dat is meer high available dan de default 5 minuten. 
 
+# Dashboard
 
-# Wat nog instellen 
-- Dashboard
-- Wat gebeurt er als er een pod of nog erger een node uitvalt. 
-  - Hier heb ik al een aardige goede begin maar moet en kan nog beter 
-- Dit tonen via een dashboard.
-   - Dit zou mooi zijn op een presentatie maar is geen vereiste
-- Etcd , Ingris concepten bekijken en kijken hoe toe te passen
-- Wat met beveiliging over de nodes (ook mss aanpassingen aanbrengen aan pi)
-- chaos monkeys of zoals ze dit in de kubernetes wereld noemen  [ Kube monkey](https://github.com/asobti/kube-monkey).
+Nu de kubernetes cluster up & running is is het handig om toch nog een visuele pagina te hebben van de cluster zodat we de pods , nodes en nog veel meer andere toepassingen visueel kunnen bekijken. 
+Om de kubernetes in te stellen gaan we alsvolgt te werk:
+
+- Om de kubernetes te installeren gaan we volgende commando runnen, je kan deze pod zien in de watch kubectl get pods --all-namespaces zien. Wanneer deze pod de status "Running" heeft draait de kubernetes dashboard!!
+- kubectl create -f https://raw.githubusercontent.com/kubernetes/dashboard/master/src/deploy/recommended/kubernetes-dashboard-arm.yaml
+
+- Eenmaal de dashboard runned zou je hem liefst nog kunnen zien op je host machine. Dat is niet even gemakkelijk als het klinkt.
+  Ik heb hiervoor een aantal dingen uitgetest maar lang nog niet alles want er zijn heel veel mogelijkheden de ene wat veiliger dan de andere. De manier hoe ik het nu doe is door de kubernetes pod te exporteren via een poort dit doe ik door middel van volgende aanpassing
+  
+  - De kubernetes dashboard word ingesteld met de instelling "ClusterIp" Deze moeten we veranderen naar NodePort.
+  - Als je deze commando uitvoert zal je de instellingen van de kubernetes dashboard te zien moeten krijgen
+  - `kubectl -n kube-system edit service kubernetes-dashboard`
+  - Localiseer de instelling voor de 'ClusterIp' (derde rij vanonder) en verander dit naar 'NodePort'
+  - In de instelling -spec-ports-nodePort zie je de poort waar naar je naartoe zal moeten surfen deze kan je aanpassen voor gemaksredenen
+  - Met de commando `kubectl -n kube-system get service kubernetes-dashboard` kan je de ip address en de poort ook altijd ophalen
+  - **Dit is niet de meest veilige manier om een kubernetes dashboard naar buiten te exporteren**
+  - **Er zijn zeker nog andere manieren om dit te doen. Bekijk zeker volgend artikel om de access naar de kubernetes beter te beveiligen**
+  - **Hier word heel goed uitgelegd om een kubernetes dashboard op te zetten en zo veilig mogelijk op te zetten**
+  - https://blog.heptio.com/on-securing-the-kubernetes-dashboard-16b09b1b7aca
+  
+- Als je nu vanuit je hostmachine de dashboard kan ophalen zal je een login scherm te zien krijgen. Nu zal je een admin user aanmaken en ik zal ook even toelichten hoe je nieuwe accounts aanmaakt met beperkte restrictions. 
+
+Kubernetes werkt met service accounts die je dan bepaalde roles kunt geven. Zo kan je een server account aanmaken om hem de cluster-admin role te geven. Nadat je dit gedaan hebt is het gewoon een kwestie van de token van de admin op te halen en in te loggen als administrator
+
+ - In kubernetes kan je alles met yaml files doen , ook service acccounts, roles , clusterroles. Maar we gaan hiervoor gewoon gebruik maken van een commando om dit te doen. 
+ - Om een serviceaccount aan te maken voeren we deze commando uit `kubectl create serviceaccount administrator`.
+ - Nu de serviceaccount is aangemaakt moeten we nog de administrator role aan toekennen die van toepassing is voor de hele namespaces en dat doen we met volgende commando.
+ - `kubectl create clusterrolebinding administrator --clusterrole=cluster-admin --serviceaccount=default:administrator`
+ - Oké nu er een service account en een role is aangemaakt voor deze service account hoe kunnen we inloggen in het dashboard.
+ - We moeten het token van de service account gaan ophalen, en dat doen we met volgende commando
+ - `kubectl get secrets` zal je een lijst tonen van secrets van alle service accounts
+ - `kubectl describe secret administrator-token-xxx` zal de token te voorschijn tonen voor de administrator.
+ - **Dit is een token die je een root toegang geeft voor het dashboard. Zorg er dan voor dat je de token dus opslaat als een root passwoord**
+ 
+Wanneer je nu surft naar het ip address van de master met de poort die je hebt opgehaald, en de token gebruikt van de administrator serviceaccount die je hebt aangemaakt zal je binnenkunen in je kubernetes dashboard.
+
+### Nieuwe gebruikers
+
+Nu heb je 1 token om in te loggen in je dashboard als administrator. Om andere gebruikers toe te laten tot het dashboard doe je hetzelfde als hierboven om een account aan te maken
+
+1. `kubectl create serviceaccount NAAMGEBRUIKER`
+2. `kubectl create clusterrolebinding NAAMGEBRUIKER --clusterrole=ROL --serviceaccount=NAMESPACE:NAAMGEBRRUIKER`
+3. `kubectl get secrets`
+4. `kubectl describe secret administrator-token-xxx`
+
+Als beheerder van je kubernetes cluster wil je natuurlijk niet dat iedereen hetzelfde kan als jou. Je zou graag willen dat de gebruiker die je toegang geeft maar beperkte rechten heeft. De clusterroles die er al default klaar staan zijn alsvolgt:
+- cluster-admin
+- admin
+- edit
+- view
+Deze clusterroles zijn voldoende voor standaard beperkingen. In kubernetes kan je natuurlijk alles aanpassen en instellen via yaml files. Zelfs nieuwe beperkingen in te stellen dit gaat zo ver als je zelf wilt. Omdat dit aanpasbaar is aan de gebruiker die je zelf nodig hebt , heb ik dit niet verder toegelicht maar in volgende documentatie zal je zeker vinden wat je nodig hebt om dit zelf in te stellen. Beperk je niet enkel op deze tutorials de sky is the limit met google.
+- http://blog.kubernetes.io/2017/10/using-rbac-generally-available-18.html
+- https://docs.bitnami.com/kubernetes/how-to/configure-rbac-in-your-kubernetes-cluster/
+
+
 
 ### Debugging commando's
+
+#### status
+
+Om je pods te bekijken of deze aan het draaien zijn of niet en op welke node deze draaien kan je volgende commando gebruiken
+- `kubectl get pods --all-namespaces -o wide`
+Als je nu eens dieper wilt bekijken wat een pod aan het doen is en waarom deze de image niet pulled kan je volgende commando gebruiken.
+- `kubectl descibe pods NAAMVANPOD`
+
 #### Logs
 
 - `kubectl describe pods(deze geeft weer wat de pods allemaal doen)`
 -  `kubectl get events`
 -  `journalctl -u kubelet`
+
+
 #### Reset
 Het kan gebeuren dat je opnieuw wilt beginnen door een fout of iets anders. 
 De commando `kubeadm reset` zal de cluster verwijderen en kan je dus opnieuw beginnen. Voer dit uit op de node(s) en op de master. Je kan op de master best ook de .`/kube` folder verwijderen zodat je zeker geen verwarringen krijgt met de nieuwe kubeadm conf file
@@ -165,3 +222,7 @@ https://kubecloud.io/setup-a-kubernetes-1-9-0-raspberry-pi-cluster-on-raspbian-u
 De yaml files voor de pods en de service
 
 https://blog.jetstack.io/blog/k8s-getting-started-part3/
+
+https://blog.heptio.com/on-securing-the-kubernetes-dashboard-16b09b1b7aca
+https://github.com/luxas/kubeadm-workshop
+
