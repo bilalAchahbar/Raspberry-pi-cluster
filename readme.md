@@ -84,7 +84,7 @@ Wanneer je nu wilt verbinden met de Raspberry pi vanuit je windows host ga je de
 Wanneer je nu verbind met je raspberry zal je niet gevraagd worden om het wachtwoord in te geven want hij bevestig jouw machine door de ssh key. Je kan zelf de default gebruikersnaam instellen in putty zodat hij je ook niet zal vragen achter jouw gebruikersnaam. Door in het tabblad Connection--> Date de auto-login username in te stellen. Zo zal je bij je volgende sessie direct verbonden zijn met je raspberry pi. Vergeet zeker niet om deze instellingen in putty  op te slaan zodat je niet steeds de keys en de default gebruikersnaam moet meegeven.
 
 
-### Handige tools
+## Handige tools
 
 In de basic image staan er al bepaalde bash scripts klaar zodat je handig bepaalde instellingen kunt uitvoeren. De bash scripts die handig zijn om te gebruiken eenmaal je alles hebt opgezet zijn `xplore` en `update`. Deze 2 bash scripts staan al in de /usr/local/bin folder dus kan je overal oproepen. Zie de documentatie "Set up basic image" waar een uitgebreide uitleg staat over deze 2 bach scripts.
 
