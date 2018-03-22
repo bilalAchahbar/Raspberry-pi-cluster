@@ -14,14 +14,13 @@ Basic image waar kubernetes en docker al is geinstalleerd.
 ## Let's begin
 Allereerst zet je de master en de nodes klaar
 
-- Hostnames veranderen
-     - Hiervoor staat er al een script klaar `changeHostname.sh` 
 - Zorg ervoor dat de ip addressen static zijn aangezien we niet willen dat de dhcp ons nieuwe ip addressen geeft eenmaal de cluster in een server rack zit.
      - Hiervoor moeten we de file `/etc/dhcpcd.conf`aanpassen
      - Als je met je cursor tot het einde van de file navigeert , zal je volgende lijnen te zien krijgen
      
             - "#Example static ip configuration"
-      - Daar na zie je een hoop configuraties voor je eth0 in te stellen. de comment  deze lijnen en verander de addressen naar jouw static ip.
+            
+      - Daar na zie je een hoop configuraties voor je eth0 in te stellen. verwijder de '#' comment  character om  deze lijnen te activeren  en verander de addressen naar jouw static ip.
 ```
     interface eth0
     static ip_address=xx.xx.xx.xx/24
@@ -29,15 +28,34 @@ Allereerst zet je de master en de nodes klaar
     static domain_name_servers=xx.xx.xx.xx
 ```
 
-Eenmaal dit veranderd is kunnen we beginnen.
+- Hostnames veranderen
+     - Hiervoor staat er al een script klaar `changeHostname.sh` 
+     - Dit script zal je systeem rebooten **Let op als je opnieuw ssh'ed dat je naar de nieuwe ip address gaat**
+
+
 ### kubeMaster
+
+Omdat de basic image bedoeld is om basic te zijn zodat je hiermee zowel een node als een master mee kunt opstarten met bovenstaande aanpassingen mis je nog 1 file om de kubernetes master te initialiseren.
+
+De file die je moet kopiëren naar de master is `kubeConfig.yaml` Dit zijn extra configuraties die bedoeld zijn om een lagere downtime van een pod en node te garanderen. 
+```
+apiVersion: kubeadm.k8s.io/v1alpha1
+kind: MasterConfiguration
+controllerManagerExtraArgs:
+        pod-eviction-timeout: 10s
+        node-monitor-grace-period: 10s
+node-monitor-period: 2s
+```
+
+Deze file staat in de Github folder en kan je dus scp naar de kubemaster.
+En kan je kopieren met de volgende commando:
+- `scp kubeConfig.yaml xplore@10.1.88.203:/home/xplore`
 
 #### INIT
 ```
 Initialiseren van kubernetes master
-Voor de code van de configfile ZIE oplossing2
 ```
-- `kubeadm init --config CONFIGFILE.yaml`
+- `kubeadm init --config kubeConfig.yaml`
   - Wanneer je deze commando runt gaat de kubernetes van alles uitvoeren. 
   - Dit kan een tijdje duren aangezien hij images moet pullen om dit te laten werken. Eenmaal het gedaan is krijg je een scherm (zie onderstaande foto) met 3 commando's en een joinkey.
   - **BELANGRIJK**: sla de join key zeker goed op zodat wanneer een nieuwe node of een node gereset word dat je deze makkelijk kan toevoegen. omdat je jezelf beter niet moet vertrouwen kan je deze key beter in een text documentje zetten zodat je deze altijd kan ophalen. Met de commando `echo KEYDIEJEOPHETSCHERMZIET >> joinKey.txt`
@@ -80,75 +98,16 @@ Succesvol master aangemaakt en nodes toegevoegd
 Wanneer je alle stappen succesvol hebt uitgevoerd zou de commando `kubectl get nodes` dit scherm moeten tonen. 
 Daar kan je zien welke nodes er zijn toegevoegd en welke de master is. hier kan je ook zien wat de status is van elke node.
 
+Verder kan je met de commando `kubectl get pods --all-namespaces -o wide` alle pods zien die op de kubernetes cluster staat. Wanneer deze allemaal de status "Running" hebben is de basic kubernetes cluster volledig opgebouwd. 
 
-```
-De kubernetes testen
-``` 
-We kunnen een pod handmatig aanmaken , en daarin een container inzetten door middel van een image te pullen. Maar je kan dit net zoals in docker volledig uitvoeren met een automatisatiescriptje namelijk de yaml file. 
-
-Voor de test/ presentatie yaml file heb ik een standaard yaml file opgezet die een nginx image zal pullen en deze zal zetten in een Replication controller die er voor gaat zorgen dat de container gerepliceerd word en gemanaged word. De yaml file ziet er als volgt uit
-```
-apiVersion: v1
-kind: ReplicationController
-metadata:
- name: nginx-controller
-spec:
- replicas: 3
- selector:
-   name: nginx
- template:
-   metadata:
-     labels:
-       name: nginx
-   spec:
-     containers:
-       - name: nginx
-         image: nginx
-         ports:
-           - containerPort: 80
-```
-
-Deze yaml file gaat dus 1 container aanmaken die de nginx image zal pullen (van waar juist weet ik niet Docker hub???) deze zal ook 3 replica's maken zodat je steeds 3 pods klaar hebt staan. 
-je runt deze yaml file met deze commando `kubectl create -f naamVanYAML.yml`
-Kubernetes zit zo goed in elkaar dat wanneer je dit instelt dat er 3 pods moeten draaien er zeker van gaat zijn dat er 3 pods gaan draaien. Wanneer je dus 1 pod uitschakelt het automatisch een pod zal restarten.
-Deze pods zullen ook worden gescaled op de available nodes.
-
-Met de commando `kubcetl get nodes -o wide` kan je zien welke ip addressen bij welke pod horen en hoe je er dus zo aangeraakt. 
-
-In deze test omgeving heb ik dus een nginx image opgehaald en in een container gezet en hiervan 2 kopieen aangemaakt. Deze hebben nu 3 individuele ip addressen waar je naar toe kan surfen. Om dit proces te vereenvoudigen ga je werken met een loadbalancer en dus maar surfen naar 1 address en de eerste de beste pod nemen. De gebruiker maakt het niet uit welke pod dit is zolang de webserver maar werkt. Ook hier heeft kubernetes over nagedacht namelijk SERVICES. 
-
-Net zoals alles kan je een service ook in een yaml file declareren dat deze de parameters in een bestand opsomt en runt met 1 kleine commando.
-De service yaml file ziet er als volgt uit
-
-
-```
-kind: Service
-apiVersion: v1
-metadata:
-  name: web-service
-spec:
-  selector:
-    name: nginx
-  ports:
-    - protocol: TCP
-      port: 80
-      targetPort: 80
-```
-
-Deze service creer je op dezelfde manier als de replicacontroller `kubectl create -f naamVanService.yaml`
-
-met de commando `kubectl get services` kan je deze service ophalen. 
-
-
-
-
+#Dashboard
 
 #### Probleemstelling2
 Wanneer je dus de pods up and running zijn en je deze kan zien met de commando `sudo kubectl get pods -o wide` ga je ook zien dat de 3 pods verdeeld worden over de nodes die beschikbaar zijn. 
 Probleem stelling is nu dat wanneer je 1 node zal uitschakelen hij wel de pods zal verdelen naar de andere node maar hij hiervoor 4 tot 5 minuten voor nodig heeft. Dat is niet echt productie gericht in een raspberry pi cluster.
 
 #### Oplossing2
-De kube-controller-manager heeft een parameter genaamd pod-eviction-timeout. Deze staat standaard op 5 minuten en moet veranderd worden naar een zo min mogelijke overgangstijd. Aangezien we alles zoveel mogelijk willen automatiseren gaan we de kubeadm initialiseren met een configuratie file. 
+De kube-controller-manager heeft een parameter genaamd pod-eviction-timeout. Deze staat standaard op 5 minuten en moet veranderd worden naar een zo min mogelijke overgangstijd. Aangezien we alles zoveel mogelijk willen automatiseren gaan we de kubeadm initialiseren met een configuratie file. (Dit is de file dat je hebt gebruikt om je kubernetes master te initialiseren)
 Die het volgende bevat 
 
 ```
@@ -163,17 +122,8 @@ controllerManagerExtraArgs:
 de pod-eviction-timeout gaat wachten op de node om de controller manager up te daten. , de node grace period geeft de node de tijd om unresponsive te zijn. de node monitor period is de tijd dat de node de status gaat syncing met de node controller. 
 
 Als je de kubeadm initialiseert met deze configuratiefile met de commando `sudo kubeadm init --config naamConfFile.yaml` zal je de kubernetes cluster instellen met de juiste configuraties voor zo high available mogelijke uitkomst. Nu zal kubernetes binnen de 10 seconden reageren wanneer een node uitvalt en dat is meer high available dan de default 5 minuten. 
-# High available
-WAT WERKT ER AL
-- Wanneer een pod word gekilled zal er automatisch een andere pod worden opgezet (replicationcontroller fixt dees)
-- Wanneer je een node afzet gaat de pod die daarop draaide op "unready" worden gezet en een nieuwe pod worden aangemaakt op de available node. 
-  - Er moet nog worden gezien om de pod die draaide op de node die is uitgevellen te terminaten. Want dit gebeurd enkel als de node terug is opgestart.
 
-WAT MOET NOG WORDEN GEDAAN
-- Wanneer een nieuwe node wordt toegevoegd aan de cluster moet kubernetes dit automatisch zelf detecteren (Kijk naar auto horizontal scaling). 
-- Wanneer de master uitvalt moet niet heel de boel plat liggen (2 raspberry's als master en node gebruiken)
-- kube monkeys: wanneer een pod word gekilled zal er een nieuwe worden aangemaakt . Maar dit is bij een manuele kill. Wat gebeurd er bij een automatische kill.
-- storage high available maken (ceph). eens bekijken
+
 # Wat nog instellen 
 - Dashboard
 - Wat gebeurt er als er een pod of nog erger een node uitvalt. 
