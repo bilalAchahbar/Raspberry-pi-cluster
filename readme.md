@@ -1,6 +1,6 @@
 # Kubernetes cluster op een bare metal Raspberry pi cluster
 
-[Foto van de server rack met kubernetes dashboard op het scherm]
+![Setup](/images/XplorianCluster.jpg)
 
 ## Maintainer
 
