@@ -18,24 +18,24 @@ Ik heb een Raspberry Pi cluster gebouwd op een Bitscope rack. Dat als doel heeft
 
 ## Documentatie
 
-### ![Setup Basic image](https://github.com/bilalAchahbar/Raspberry-pi-cluster-xplore-group/blob/master/Set%20up%20basic%20image.md)
+### [Setup Basic image](https://github.com/bilalAchahbar/Raspberry-pi-cluster-xplore-group/blob/master/Set%20up%20basic%20image.md)
  
 - In deze file leg ik volledig uit hoe ik van een lege sd kaart tot mijn basic image ben gekomen. Deze basic image heeft alle nodige aanpassingen en programma's al ingesteld zodat deze direct te gebruiken is voor de Raspberry pi. 
       
 
-### ![Bitscope setup](/tutorial-bitscope-rack.md)
+### [Bitscope setup](/tutorial-bitscope-rack.md)
  
  - Voor de setup van mijn Raspberry pi heb ik gebruik gemaakt van een Bitscope quattro pi. Deze hardware blade is gemaakt om een server rack te maken van Raspberry pi's. Hiervoor heb ik een tutorial gemaakt hoe ik de Bitscope rack in elkaar heb gestoken.
  
-### ![Setup Kubernetes Cluster](https://github.com/bilalAchahbar/Raspberry-pi-cluster-xplore-group/blob/master/Kubernetes.md)
+### [Setup Kubernetes Cluster](https://github.com/bilalAchahbar/Raspberry-pi-cluster-xplore-group/blob/master/Kubernetes.md)
   
 - Als alles is opgezet en alle Raspberry pi's klaar staan kunnen we beginnen met een Kubernetes cluster op te zetten. In deze file leg ik uit hoe je een Kubernetes master initialiseert en nodes kan toevoegen aan de cluster. Op het einde van deze documentatie heb je een basic Kubernetes cluster opgezet. Verder word er ook uitgelegd hoe je een Kubernetes dashboard moet opzetten en hoe je bepaalde serviceaccounts met restricted access kan toevoegen.
 
-### ![Virtuele omgeving](https://github.com/bilalAchahbar/Raspberry-pi-cluster-xplore-group/blob/master/Tutorial%20%20Bitscope%20Rack.md)
+### [Virtuele omgeving](https://github.com/bilalAchahbar/Raspberry-pi-cluster-xplore-group/blob/master/Tutorial%20%20Bitscope%20Rack.md)
  
  - In een wereld waar Edward A. Murphy voorspelde dat wanneer er iets fout kan gebeuren dit ook zal gebeuren moeten we als it'ers dit vaak zien te voorkomen. Om een virtuele testomgeving op te zetten zodat we niet te veel verkeerd kunnen doen aan de hardware .Heb ik geprobeerd om een virtuele Raspberry pi cluster op te zetten. Maar de technologie is op het moment dat ik dit heb geschreven nog niet optimaal om een Kubernetes cluster op een virtuele Raspberry pi cluster op te zetten. Bekijk de documentatie hoe ik dit heb opgezet en waar het verkeerd loopte. En  misschien is op het moment dat je deze readme leest de bug in de virtuele emulator opgelost en kan jij dit wel opzetten.
  
- ### ![Extra's](https://github.com/bilalAchahbar/Raspberry-pi-cluster-xplore-group/blob/master/extra.md)
+ ### [Extra's](https://github.com/bilalAchahbar/Raspberry-pi-cluster-xplore-group/blob/master/extra.md)
  
  Kubernetes is een uitgebreide technologie omdat ik niet alles kon toepassen heb ik toch nog de tijd genomen om bepaalde extra's die ik toch heel interessant vond te onderzoeken en hierover een kleine referentie documentatie (naar handige links) te schrijven. Zodat jij als lezer sneller interessante extra's kan bekijken en een tip krijgt wat ik interessant vond om in de kubernetes cluster toe te passen. Het gaat hier over storage , extra beveiliging op de dashboard , ingress controllers , etc.
  
