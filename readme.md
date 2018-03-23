@@ -95,6 +95,7 @@ Stel dat er toch nog iets fout is gelopen bij een Raspberry pi is dat zeker niet
 - SSH naar je Raspberry pi
 - Verander de ip address  naar een static ip address *Zie kubernetes.md om te zien hoe dit gebeurd.*
 - Verander host name door middel van een bash script die al klaar staat `changeHostname.sh`.
+- Omdat een node en een master andere aanpassingen nodig hebben doe je het volgt om een nieuwe node of master aan te passen.
 
     - Om een node die je opnieuw moet instellen of wilt bij toevoegen doe je het volgende:  
       - Kopieer de joinKey.txt vanuit de master naar de nieuwe node.
