@@ -25,7 +25,7 @@
 
 
 ## Beschrijving
-Dit is een readme van hoe  de basic image die werd geconfigureerd voor xplore group werd aangemaakt. Deze image heeft een Raspian stretch lite besturingsysteem en werd geconfigureerd met de nodige programma’s en de nodige configuraties voor een basic omgeving voor een kubernetes omgeving. Met als doel deze image te clonen en te gebruiken op elke kubernetes node, master.
+Dit is een readme van hoe  de basic image die werd geconfigureerd voor xplore group werd aangemaakt. Deze image heeft een Raspian stretch lite besturingsysteem en werd geconfigureerd met de nodige programma’s en de nodige configuraties voor een basic omgeving voor een Kubernetes omgeving. Met als doel deze image te clonen en te gebruiken op elke Kubernetes node, master.
 
 ## Basic credentials
 Wanneer je de stretch lite OS download zijn dit de basic credentials.
@@ -33,7 +33,7 @@ Wanneer je de stretch lite OS download zijn dit de basic credentials.
 - Gebruikersnaam: pi
 - Wachwoord: raspberry
 
-Voor dit project heb ik de gebruikersnaam , wachtwoord en hostname veranderd.  In deze readme zal ik voor security redenen deze naamgeving gebruiken maar deze gebruikers en hostnames bestaan niet dus kopieer deze niet over gebruik je eigen credentials wanneer je deze naamgeving tegenkomt.
+Voor dit project heb ik de gebruikersnaam , wachtwoord en hostname veranderd.  In deze readme zal ik voor security redenen volgende naamgeving gebruiken maar deze gebruikers en hostnames bestaan niet dus kopieer deze niet over gebruik je eigen credentials wanneer je deze naamgeving tegenkomt.
  - Gebruikersnaam: Gebruiker
  - Wachtwoord: supersecretpassword
  - hostname: Hostname
