@@ -52,27 +52,27 @@ Voor dit project heb ik de gebruikersnaam , wachtwoord en hostname veranderd.  I
    -  `xplore`
    -  `update`
    
-    Omdat het veel werk is om een bash script telkens te laten runnen met de `./` ervoor heb ik alle bash scripts toegevoegd aand e `/usr/local/bin/` folder zodat je de bash script direct vanuit elke directory kan oproepen. De scripts zelf staan allemaal ook in de folder  `Bashscripts` in de home folder van de basic image als je deze in detail wilt bekijken.
+    Omdat het veel werk is om een bash script telkens te laten runnen met de `./` ervoor heb ik alle bash scripts toegevoegd aan de `/usr/local/bin/` folder zodat je het bash script direct vanuit elke directory kan oproepen. De scripts zelf staan allemaal ook in de folder  `Bashscripts` in de home folder van de basic image als je deze in detail wilt herbekijken.
 #### Keuze image
 Ik heb hier gekozen voor een Raspberri pi stretch lite .Tijdens het schrijven van deze README is dit nog de Raspberry pi stretch lite dit kan in de toekomst veranderen maar er zal steeds een lite versie bestaan van de nieuwe update van Raspbian.
-De reden dat ik de lite versie heb gebruikt is omdat dit de ideale os is voor een server omgeving. Bij de gewone Raspbian (met GUI) zijn er te veel utilities die we zowiezo niet nodig hebben (Deze programma's zijn perfect wanneer je een raspberri pi gebruikt voor andere doeleinden zoals leren programmeren of   waar je een grafische interface voor nodig hebt) . Ookal kan je in de Raspbian image opstarten in command line is de lite versie veel kleiner. Al deze benodigdheden die we niet nodig hebben zijn al weggehaald door Raspberry zelf in een mooie gui loze omgeving: de lite versie van de huidige Rasbian versie.
+De reden dat ik de lite versie heb gebruikt is omdat dit de ideale OS is voor een server omgeving. Bij de gewone Raspbian (met GUI) zijn er te veel utilities die we zowiezo niet nodig hebben. Deze programma's zijn perfect wanneer je een raspberri pi gebruikt voor andere doeleinden zoals leren programmeren of waar je een grafische interface voor nodig hebt. Ookal kan je in de Raspbian GUI image kiezen om  op te starten in  een command line omgeving is de lite versie veel kleiner. Al deze benodigdheden die we niet nodig hebben zijn al weggehaald door Raspberry zelf in een mooie gui loze omgeving: de lite versie van de huidige Raspbian versie.
 
 #### SD kaart opzetten voor eerste startup
 
-Voor de setup heb je de Rasbian stretch lite nodig die je vind in de downloads pagina van de site van Raspberry pi. Om deze raspbian stretch lite image te burnen op een sd kaart gebruik je etcher. Dit is een programma dat in Linux , macOS en windows kan draaien. Je selecteert je image en je sd kaart en etcher zal al het werk verichten van flashen tot burnen en unmounten van je sd kaart. Wanneer je via een windows host machine werkt en geen linux of mac kan je putty gebruiken om te connecteren via ssh. Voor het aanmaken  van een gepersonaliseerde image voor xplore group gebruikte ik het programma win32diskimager(later hierover meer).
+Voor de setup heb je de Raspbian stretch lite nodig die je vind in de download pagina van de site van Raspberry pi. Om deze Raspbian stretch lite image te burnen op een sd kaart gebruik je Etcher. Dit is een programma dat in Linux , macOS en Windows kan runnen. Je selecteert je image en je sd kaart en Etcher zal al het werk verichten van flashen tot burnen en unmounten van je sd kaart. Wanneer je via een Windows host machine werkt en geen Linux of Mac kan je putty gebruiken om te connecteren via ssh. Voor het aanmaken  van een gepersonaliseerde image voor Xplore group gebruikte ik het programma win32diskimager(later hierover meer).
 
 ## Eenmaal de Raspbian stretch lite is opgezet
 
 #### Init scripts
-Er is een bash script  `init.sh`voorzien die de nodige updates , installs en configuraties zal uitvoeren om je image klaar te maken voor ssh , docker , kubeadm , en alle configuraties voor een headless pi (bluetooth en wifi uitschakelen. gpu/cpi split veranderen). Voer dit script uit nadat je raspberri pi  is opgestart zodat al je configuraties ingesteld zijn voordat je kan beginnen. 
+Er is een bash script `init.sh`voorzien die de nodige updates , installs en configuraties zal uitvoeren om je image klaar te maken voor ssh , docker , kubeadm , en alle configuraties voor een headless pi (bluetooth en wifi uitschakelen. gpu/cpi split veranderen). Voer dit script uit nadat je clean raspberri pi  is opgestart zodat al je configuraties ingesteld zijn voordat je kan beginnen. 
 Het 2de script `xplore`is een script met als doel een extra veiligheid in te stellen door passwoord authenticatie uit te schakelen na een ssh verbinding. Later word dit in detail besproken. 
-De `update` script is een klein script dat je systeem zal updaten. Om niet steeds de 3 commando's (update , upgrade , dist-upgrade) uit te voeren kan je dit met 1 bashscript rechtstreeks uitvoeren. Deze updates worden in de init script ook uitgevoerd maar voor veiligheidsredenen is het van groot belang om steeds jouw OS up to date te houden. 
+De `update` script is een klein script dat je systeem zal updaten. Om niet steeds de 3 commando's (update , upgrade , dist-upgrade) uit te voeren kan je dit met 1 bashscript rechtstreeks uitvoeren. Deze updates worden in de init script ook uitgevoerd maar voor veiligheidsredenen is het van groot belang om steeds jouw OS up to date te houden.**Voer dit dus regelmatig uit !**
 #### Configuratie menu
 
-In de raspberry linux distribution is er een configuratie menu waar je bepaalde instellingen in een mooie interface kan aanpassen. Deze is handig om bvb je hostname , keyboard instellingen etc snel aant te passen.
+In de Raspberry pi distribution is er een configuratie menu waar je bepaalde instellingen in een mooie interface kan aanpassen. Deze is handig om bvb je hostname , keyboard instellingen etc snel aant te passen.
 Je kan aan deze menu opvragen door volgende commando in te geven `sudo raspi-config`
-Ik werk met een azerty toetsenbord en zal dus voor gemaks redenen de keyboard instellingen aanpassen naar een azerty toetsenbord. Dat doe je alsvolgt:
-- Veranderen van keyboard layout
+Ik werk met een Azerty toetsenbord en zal dus de keyboard instellingen aanpassen naar een azerty toetsenbord. Dat doe je als volgt:
+- Veranderen van keyboard layout in raspi config menu
    - Localisation options
    - Change keyboard Layout
 
@@ -136,48 +136,6 @@ In Linux word elke user dat je toegevoegd aan de sudo groep, een sudo user en kr
 #### 3 SSH verbinding
 Om de ssh service automatisch op te starting tijdens de boot voer je volgende commando uit. Deze zal een link maken in de boot folder naar de ```/etc/init.d/servicenaam```.Zo hoef je niet elke keer handmatig de service op te starten. (Deze instelling word ingesteld in het `ìnit.sh`script).
    - `sudo update-rc.d ssh defaults`
-
-   
-Als je ssh verbinding is opgestart kan je proberen verbinden vanuit je host naar de raspberry pi. Om nu SSH keys te gebruiken vanuit linux , windows of macOS zal je volgende stappen moeten volgen. Zie zeker dat je de `init.sh`script hebt uitgevoerd in het begin om de mappen en bestanden die nodig zijn voor de ssh keys op te slaan op je raspberry pi aan te maken.
-
-### SSH keys aanmaken op je host machine
-##### SSH key aanmaken in linux 
-In linux is de ssh client  standaard al geinstalleerd. Is dit niet het geval kan je dit doen door `sudo apt-get install openssh-server`Deze zal de server en de client voor je installeren. 
-Met de commando `ssh-keygen -t rsa -C comment`_(Geef als comment de naam van jouw pc of jou naam mee zodat je in de raspberry pi later de keys van de verschillende pc’s makkelijker kan achterhalen.)_ ga je de ssh keys genereren. Volg de instructies op het scherm. Je zal gevraagd worden om de keys op te slaan in een map naar keuze of de default home folder. Verder krijg je de vraag om een wachtwoord in te geven , deze dient om de private key te beveiligen.
-Bij een succesvolle creatie van een ssh key krijg je soortgelijk scherm te zien
-
-![Linux ssh](/images/linux_ssh.jpg)
-
-Nu zal je de public key van je hostmachine moeten kopiëren om deze in je raspberri pi op te slaan en dat je raspberri pi jouw host machine als authorized host kan zien. Dit kan je doen met volgende commando:
-`cat ~/.ssh/id_rsa.pub | ssh Gebruiker@Hostname 'cat >> .ssh/authorized_keys'`
-Als je nu inlogt via ssh (met de commando `ssh Gebruiker@Hostname`) zal je direct ingelogd zijn zonder eerst de credentials in te moeten geven.
-
-##### SSH key aanmaken in macOS
-
-Aangezien mac met dezelfde unix terminal werkt als linux zijn de commando’s identiek namelijk: 
--	`ssh-keygen -t rsa -C comment` (Geef als comment de naam van je pc of jouw naam mee).
--	Stel hierna in waar de keys moeten worden opgeslagen.
--	Voor een extra beveiliging kan je een wachtwoord instellen op de private key. *OPTIONEEL*
--	Ten slotte kopieer je de publieke key naar de raspberri pi`cat ~/.ssh/id_rsa.pub | ssh Gebruiker@Hostname 'cat >> .ssh/authorized_keys'`.
--	Je kan verbinden met de raspberry pi vanuit macOS via volgende commando `ssh Gebruiker@Hostname`.
-
-##### SSH key aanmaken Windows
-
-In Windows gebruik je niet de ssh keygen commando maar de Putty Key Generator. Dit is een programma van putty die een publieke en private key zal genereren.Open de putty keygen generator (dit is normaal gezien standaard mee geinstalleerd wanneer je Putty hebt geinstalleerd bekijk de download page van Putty wanneer dit niet het geval is). Daar kies je in het tabblad key voor de optie “SSH-2 RSA key” en klik je op Generate. 
-
-Beweeg je muis over het lege grijze vlak zodat de keygenerator  zijn werk kan uitvoeren en een random key kan genereren. Nadat putty een ssh key heeft uitgevoerd krijg je volgend scherm te zien.. De private key en de public key sla je veilig op je host machine via de 2 onderste knoppen "Save public key" , "Save Private key". De private key zal je later nodig hebben om te verbinden met je raspberri pi. **SLA ZEKER JE KEYS GOED OP**
-
-![Putty keygen](/images/PuttyKeygen.jpg)
-
-De bovenstaande key die je in het textvak kunt zien moet je kopieren en plakken in de authorized_keys file van je raspberry pi **LET OP DE SCROLBAR, KOPIEER ZEKER ALLES MEE**. Hiervoor ga je in putty verbinden (TYP DIT NIET OVER KOPIEER) met de raspberry pi om naar volgende bestand te gaan `~/.ssh/authorized_keys`. Dit bestand kan al andere keys bevatten van andere pc’s je plakt hierin de publiek key van jouw pc op een nieuwe lijn(in Putty kan je plakken vanuit je  windows klembord met de shortkey *SHIFT+INSERT*). Sla het bestand ~/.ssh/authorized_keys op en sluit de editor.
-
-###### **Verbinden met de raspberry vanuit windows host.**
-
-Wanneer je nu wilt verbinden met de Raspberry pi vanuit je windows host ga je de private key meegeven in Putty dit doe je door in Putty het volgende in te stellen. Bij opstart van Putty kies je in het linkerscherm voor -->SSH-->Auth daar zie je de Browse knop en  moet je de private key meegeven  die je daarnet in de Putty Key Generator hebt opgeslagen(niet de key die je hebt gekopieerd in ~/.ssh/authorized_keys file maar de key die je hebt opgeslagen in de keygenerator met de kop "Save private key" .
-
-![Putty geef private key mee](/images/PuttySshPrivatekey.jpg)
-
-Wanneer je nu verbind met je raspberry zal je niet gevraagd worden om het wachtwoord in te geven want hij bevestig jouw machine door de ssh key. Je kan zelf de default gebruikersnaam instellen in putty zodat hij je ook niet zal vragen achter jouw gebruikersnaam. Door in het tabblad Connection--> Date de auto-login username in te stellen. Zo zal je bij je volgende sessie direct verbonden zijn met je raspberry pi. Vergeet zeker niet om deze instellingen in putty  op te slaan zodat je niet steeds de keys en de default gebruikersnaam moet meegeven.
 
 #### Extra beveiliging
 ##### 1. Wachtwoord uitschakelen na SSH verbinding
@@ -316,11 +274,6 @@ Om deze image nu te branden op een sd kaart gebruik je weer etcher zoals we in h
     https://www.makeuseof.com/tag/install-operating-system-raspberry-pi/
     https://www.raspberrypi.org/magpi/pi-sd-etcher/
 
--	SSG keys instellen via putty en putty key gen.
-
-    https://devops.profitbricks.com/tutorials/use-ssh-keys-with-putty-on-windows/
-    https://www.raspberrypi.org/forums/viewtopic.php?f=36&t=181846
-    https://www.ssh.com/ssh/putty/windows/puttygen
 -	Wachtwoord uitschakelen na ssh verbinding.
 
     https://www.cyberciti.biz/faq/how-to-disable-ssh-password-login-on-linux/
