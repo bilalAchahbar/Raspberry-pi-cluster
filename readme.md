@@ -35,6 +35,10 @@ Ik heb een Raspberry Pi cluster gebouwd op een Bitscope rack. Dat als doel heeft
  
  - In een wereld waar Edward A. Murphy voorspelde dat wanneer er iets fout kan gebeuren dit ook zal gebeuren moeten we als it'ers dit vaak zien te voorkomen. Om een virtuele testomgeving op te zetten zodat we niet te veel verkeerd kunnen doen aan de hardware .Heb ik geprobeerd om een virtuele Raspberry pi cluster op te zetten. Maar de technologie is op het moment dat ik dit heb geschreven nog niet optimaal om een Kubernetes cluster op een virtuele Raspberry pi cluster op te zetten. Bekijk de documentatie hoe ik dit heb opgezet en waar het verkeerd loopte. En  misschien is op het moment dat je deze readme leest de bug in de virtuele emulator opgelost en kan jij dit wel opzetten.
  
+ ### ![Extra's](https://github.com/bilalAchahbar/Raspberry-pi-cluster-xplore-group/blob/master/extra.md)
+ 
+ Kubernetes is een uitgebreide technologie omdat ik niet alles kon toepassen heb ik toch nog de tijd genomen om bepaalde extra's die ik toch heel interessant vond te onderzoeken en hierover een kleine referentie documentatie (naar handige links) te schrijven. Zodat jij als lezer sneller interessante extra's kan bekijken en een tip krijgt wat ik interessant vond om in de kubernetes cluster toe te passen. Het gaat hier over storage , extra beveiliging op de dashboard , ingress controllers , etc.
+ 
  
 ## How to connect
 
@@ -106,6 +110,7 @@ Stel dat er toch nog iets fout is gelopen bij een Raspberry pi is dat zeker niet
       - Volg dan de documentatie van de kubernetes die ik heb gemaakt om de kubernetes cluster op te zetten ( 5 commando's)
       - **Zorg er zeker voor dat je de commando `sudo kubeadm reset` uitvoert op de nodes dat deze de gegevens van de vorig master verwijderd**
       - **Verwijder dan ook de joinkey.txt van de vorige kubernetes cluster die nog in de node aanwezig is. Zodat je een nieuwe joinKey van de nieuwe kubernetes cluster kan kopieren.**
+      
   
 ## Bronnenlijst
   
