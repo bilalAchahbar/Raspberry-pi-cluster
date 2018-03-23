@@ -96,15 +96,15 @@ Stel dat er toch nog iets fout is gelopen bij een Raspberry pi is dat zeker niet
 - Verander de ip address  naar een static ip address *Zie kubernetes.md om te zien hoe dit gebeurd.*
 - Verander host name door middel van een bash script die al klaar staat `changeHostname.sh`.
 
-    Om een node die je opnieuw moet instellen of wilt bij toevoegen doe je het volgende:  
-     - Kopieer de joinKey.txt vanuit de master naar de nieuwe node.
-     - Voer deze commando uit zodat je node word toegevoegd aan de cluster.
+    - Om een node die je opnieuw moet instellen of wilt bij toevoegen doe je het volgende:  
+      - Kopieer de joinKey.txt vanuit de master naar de nieuwe node.
+      - Voer deze commando uit zodat je node word toegevoegd aan de cluster.
 
-    Als de master is weg gevallen zal je de volledige cluster opnieuw op moeten zetten maar dat is zo gebeurd. *Zie kubernetes.md*
-     - Nadat je dus de static ip en de hostname hebt veranderd moet je de kubeConfig.yaml kopieren naar de master pi.
-     - Volg dan de documentatie van de kubernetes die ik heb gemaakt om de kubernetes cluster op te zetten ( 5 commando's)
-     - **Zorg er zeker voor dat je de commando `sudo kubeadm reset` uitvoert op de nodes dat deze de gegevens van de vorig master verwijderd**
-     - **Verwijder dan ook de joinkey.txt van de vorige kubernetes cluster die nog in de node aanwezig is. Zodat je een nieuwe joinKey van de nieuwe kubernetes cluster kan kopieren.**
+    - Als de master is weg gevallen zal je de volledige cluster opnieuw op moeten zetten maar dat is zo gebeurd. *Zie kubernetes.md*
+      - Nadat je dus de static ip en de hostname hebt veranderd moet je de kubeConfig.yaml kopieren naar de master pi.
+      - Volg dan de documentatie van de kubernetes die ik heb gemaakt om de kubernetes cluster op te zetten ( 5 commando's)
+      - **Zorg er zeker voor dat je de commando `sudo kubeadm reset` uitvoert op de nodes dat deze de gegevens van de vorig master verwijderd**
+      - **Verwijder dan ook de joinkey.txt van de vorige kubernetes cluster die nog in de node aanwezig is. Zodat je een nieuwe joinKey van de nieuwe kubernetes cluster kan kopieren.**
   
 ## Bronnenlijst
   
