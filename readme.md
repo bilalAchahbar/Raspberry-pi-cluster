@@ -1,4 +1,4 @@
-# Kubernetes cluster op een bare metal Raspberry pi cluster
+# Kubernetes cluster op een Raspberry pi cluster
 
 ![Setup](/images/XplorianCluster.jpg)
 
