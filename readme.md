@@ -23,7 +23,7 @@ Ik heb een Raspberry Pi cluster gebouwd op een Bitscope rack. Dat als doel heeft
 - In deze file leg ik volledig uit hoe ik van een lege sd kaart tot mijn basic image ben gekomen. Deze basic image heeft alle nodige aanpassingen en programma's al ingesteld zodat deze direct te gebruiken is voor de Raspberry pi. 
       
 
-### [Bitscope setup](/tutorial-bitscope-rack.md)
+### [Bitscope setup](https://github.com/bilalAchahbar/Raspberry-pi-cluster/blob/master/Tutorial%20%20Bitscope%20Rack.md)
  
  - Voor de setup van mijn Raspberry pi heb ik gebruik gemaakt van een Bitscope quattro pi. Deze hardware blade is gemaakt om een server rack te maken van Raspberry pi's. Hiervoor heb ik een tutorial gemaakt hoe ik de Bitscope rack in elkaar heb gestoken.
  
